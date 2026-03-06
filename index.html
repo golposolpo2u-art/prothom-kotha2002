@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রথম কথা - স্মার্ট অডিও পোর্টাল (Ultra V8.0)</title>
     
+    <!-- SEO Optimization Tags -->
+    <title>Prothom Kotha - Smart Audio & Audition Portal</title>
+    <meta name="title" content="Prothom Kotha - Smart Audio & Audition Portal">
+    <meta name="description" content="Prothom Kotha is a premium audio quality checking and audition portal with AI scanning, mentor feedback, and voice recording features.">
+    <meta name="keywords" content="Prothom Kotha, প্রথম কথা, Audio Audition, Voice Quality Check, AI Audio Scanner, Mentor Feedback, Voice Recording Portal">
+    <meta name="author" content="Prothom Kotha Team">
+    <link rel="canonical" href="https://golposolpo2u-art.github.io/prothom-kotha2002/" />
+
+    <!-- Open Graph / Facebook / WhatsApp (How it looks when shared) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://golposolpo2u-art.github.io/prothom-kotha2002/">
+    <meta property="og:title" content="Prothom Kotha - Smart Audio & Audition Portal">
+    <meta property="og:description" content="প্রিমিয়াম অডিও চেক এবং AI স্ক্যানিং পোর্টাল। মেন্টরদের সাথে সরাসরি অডিশন দিন।">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3594/3594095.png">
+
+    <!-- Twitter Tags -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://golposolpo2u-art.github.io/prothom-kotha2002/">
+    <meta property="twitter:title" content="Prothom Kotha - Smart Audio & Audition Portal">
+    <meta property="twitter:description" content="Premium Audio Audition Portal with AI Scanning technology.">
+
     <!-- External Resources -->
     <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* PREMIUM STYLING ENGINE (CSS)
-           Theme: Glassmorphism Ultra Dark
+           Theme: Glassmorphism Ultra Dark (V8.1 - SEO Enhanced)
         */
         :root {
             --primary-glow: #00d2ff;
@@ -580,7 +600,7 @@
         </select>
     </div>
 
-    <h3 style="text-align:center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px;">📥 অডিও ইনবক্স (Last 24h)</h3>
+    <h3 style="text-align:center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px;">🎧 অডিও ইনবক্স (Last 24h)</h3>
     
     <div id="inboxList">
         <p style="text-align:center; color:#666;">লোড হচ্ছে...</p>
@@ -597,7 +617,7 @@
 
 <script>
     /* CORE APPLICATION LOGIC (JAVASCRIPT)
-       Version: 8.0 - High Definition Execution
+       Version: 8.1 - HD Execution with SEO Optimization
     */
 
     // 1. Firebase Initializing
@@ -635,7 +655,7 @@
             }
         } catch (err) {
             console.error("Auth Fail:", err);
-            document.getElementById('upload-status').innerHTML = "<b style='color:red;'>সার্ভার কানেকশন এরর! ফায়ারবেস সেটিংস চেক করুন।</b>";
+            document.getElementById('upload-status').innerHTML = "<b style='color:red;'>সার্ভার কানেকশন এরর!</b>";
         }
 
         auth.onAuthStateChanged(user => {
@@ -718,7 +738,7 @@
                 document.getElementById('scan2').innerText = "📡 Scanning for background music fingerprints...";
                 document.getElementById('pBar').style.width = "75%";
                 setTimeout(() => {
-                    document.getElementById('scan3').innerText = "✅ Integrity Check Verified. Audio is clean.";
+                    document.getElementById('scan3').innerText = "✅ AI Scan Complete. Verified.";
                     document.getElementById('pBar').style.width = "100%";
                     uploadBtn.disabled = false;
                     uploadBtn.innerHTML = "অডিও ফাইল পাঠান";
@@ -738,7 +758,7 @@
         const file = fileInput.files[0];
         const statusDiv = document.getElementById('upload-status');
 
-        statusDiv.innerHTML = "<i class='fas fa-spinner fa-spin'></i> ক্লাউড সার্ভারে আপলোড হচ্ছে... দয়া করে ট্যাব কাটবেন না।";
+        statusDiv.innerHTML = "<i class='fas fa-spinner fa-spin'></i> ক্লাউড সার্ভারে আপলোড হচ্ছে...";
         uploadBtn.disabled = true;
 
         const fd = new FormData();
@@ -763,13 +783,13 @@
                     replies: []
                 });
 
-                statusDiv.innerHTML = "<b style='color:#00ffcc;'>✅ সফল! আপনার অডিও মেন্টরদের ইনবক্সে পৌঁছে গেছে।</b>";
+                statusDiv.innerHTML = "<b style='color:#00ffcc;'>✅ সফলভাবে পাঠানো হয়েছে!</b>";
                 this.reset();
                 scanBox.style.display = 'none';
                 document.getElementById('pBar').style.width = "0%";
             }
         } catch (err) {
-            statusDiv.innerHTML = "<b style='color:red;'>❌ আপলোড ব্যর্থ! ইন্টারনেট চেক করে আবার চেষ্টা করুন।</b>";
+            statusDiv.innerHTML = "<b style='color:red;'>❌ আপলোড ব্যর্থ!</b>";
         }
         uploadBtn.innerHTML = "ফাইল সিলেক্ট করুন";
     };
@@ -777,7 +797,7 @@
     // --- MENTOR DASHBOARD LOGIC ---
 
     document.getElementById('btnMentorLogin').onclick = function() {
-        const pass = prompt("আপনার সিক্রেট মেন্টর পাসওয়ার্ড দিন:");
+        const pass = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
         const map = {
             "Neha123": "শুচিস্মিতা দাস নেহা",
             "Bidisha123": "বিদিশা মুখার্জি",
@@ -791,7 +811,7 @@
 
             document.getElementById('userPanel').style.display = 'none';
             document.getElementById('mentorPanel').style.display = 'block';
-            document.getElementById('nameTag').innerText = isMaster ? "👤 অ্যাডমিন কন্ট্রোল" : `👤 মেন্টর: ${activeMentor}`;
+            document.getElementById('nameTag').innerText = isMaster ? "👤 অ্যাডমিন" : `👤 মেন্টর: ${activeMentor}`;
             
             if (isMaster) {
                 document.getElementById('adminControls').style.display = 'flex';
@@ -821,7 +841,6 @@
     }
 
     function startInboxListener() {
-        // Fetch last 24 hours, then filter/sort in memory (Rule 2)
         const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         
         getRef('requests').onSnapshot(snap => {
@@ -839,15 +858,10 @@
                 }
             });
 
-            // Sort Descending
             dataArr.sort((a, b) => b.ts - a.ts);
 
-            // Notify on new items
             if (!isFirstLoad && dataArr.length > 0) {
                 document.getElementById('notifBell').play().catch(()=>{});
-                if (Notification.permission === "granted") {
-                    new Notification("নতুন অডিও রিকোয়েস্ট!", { body: "আপনার ইনবক্স চেক করুন।" });
-                }
             }
 
             list.innerHTML = "";
@@ -866,40 +880,38 @@
                             <i class="fas fa-user-circle"></i> ${item.uploaderName} 
                             ${item.isAudition ? '<span class="badge-audition">Audition</span>' : ''}
                         </p>
-                        <p style="font-size:12px; color:#777; margin:5px 0 15px 0;">ফাইল: ${item.fileName || 'Audio'}</p>
                         
                         <audio controls src="${item.audioUrl}"></audio>
                         
                         <div class="reply-box">
                             <div class="reply-type-tabs">
-                                <div class="type-tab active" onclick="changeReplyType('${item.id}', 'text')">টেক্সট রিপ্লাই</div>
+                                <div class="type-tab active" onclick="changeReplyType('${item.id}', 'text')">টেক্সট</div>
                                 <div class="type-tab" onclick="changeReplyType('${item.id}', 'voice')">ভয়েস রেকর্ড</div>
                             </div>
 
                             <div id="textWrap_${item.id}">
-                                <textarea id="txt_${item.id}" placeholder="আপনার মন্তব্য লিখুন..."></textarea>
-                                <button class="btn-action" style="padding:12px; font-size:14px;" onclick="sendMentorReply('${item.id}', 'text')">রিপ্লাই পাঠান</button>
+                                <textarea id="txt_${item.id}" placeholder="ফিডব্যাক লিখুন..."></textarea>
+                                <button class="btn-action" style="padding:12px; font-size:14px;" onclick="sendMentorReply('${item.id}', 'text')">পাঠান</button>
                             </div>
 
                             <div id="voiceWrap_${item.id}" style="display:none;">
                                 <button id="vRecBtn_${item.id}" class="voice-btn" onclick="toggleVoiceRecord('${item.id}')">
-                                    <i class="fas fa-microphone"></i> রেকর্ড শুরু করুন
+                                    <i class="fas fa-microphone"></i> রেকর্ড
                                 </button>
                                 <div id="vLog_${item.id}" style="text-align:center; font-size:12px; margin-top:10px; color:var(--success-green);"></div>
                             </div>
 
                             <div style="margin-top:20px; border-top:1px solid #333; padding-top:15px;">
-                                <p style="font-size:12px; color:#aaa; margin-bottom:10px;">আগের রিপ্লাইসমূহ:</p>
-                                ${reps || '<i style="font-size:12px; color:#555;">কোনো রিপ্লাই দেওয়া হয়নি</i>'}
+                                ${reps}
                             </div>
                         </div>
 
-                        <button class="logout-btn" style="width:100%; margin-top:20px; padding: 12px;" onclick="deleteDoc('${item.id}')">🗑️ লিস্ট থেকে মুছে ফেলুন</button>
+                        <button class="logout-btn" style="width:100%; margin-top:20px; padding: 12px;" onclick="deleteDoc('${item.id}')">🗑️ মুছুন</button>
                     </div>
                 `;
             });
 
-            if (dataArr.length === 0) list.innerHTML = "<p style='text-align:center; color:#555; padding:50px;'>বর্তমানে কোনো অডিও পেন্ডিং নেই।</p>";
+            if (dataArr.length === 0) list.innerHTML = "<p style='text-align:center; color:#555;'>কোনো অডিও নেই।</p>";
             isFirstLoad = false;
         });
     }
@@ -910,7 +922,6 @@
         const wrap = event.target.closest('.reply-box');
         wrap.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
         event.target.classList.add('active');
-
         document.getElementById(`textWrap_${id}`).style.display = (type === 'text' ? 'block' : 'none');
         document.getElementById(`voiceWrap_${id}`).style.display = (type === 'voice' ? 'block' : 'none');
     };
@@ -918,70 +929,52 @@
     window.sendMentorReply = async function(docId, type, voiceUrl = null) {
         const content = voiceUrl || document.getElementById(`txt_${docId}`).value;
         if (!content || !auth.currentUser) return;
-
         try {
             await getRef('requests').doc(docId).update({
                 replies: firebase.firestore.FieldValue.arrayUnion({
                     mentor: isMaster ? "Admin" : activeMentor,
-                    type: type,
-                    content: content,
-                    at: new Date()
+                    type: type, content: content, at: new Date()
                 })
             });
             if (type === 'text') document.getElementById(`txt_${docId}`).value = "";
-        } catch (e) { alert("রিপ্লাই পাঠাতে সমস্যা হয়েছে!"); }
+        } catch (e) { alert("ত্রুটি!"); }
     };
 
     window.toggleVoiceRecord = async function(docId) {
         const btn = document.getElementById(`vRecBtn_${docId}`);
         const log = document.getElementById(`vLog_${docId}`);
-
         if (!audioRecorder || audioRecorder.state === "inactive") {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 audioRecorder = new MediaRecorder(stream);
                 audioChunks = [];
-
                 audioRecorder.ondataavailable = e => audioChunks.push(e.data);
                 audioRecorder.onstop = async () => {
-                    log.innerText = "⏳ ক্লাউডে সেভ হচ্ছে...";
+                    log.innerText = "⏳ আপলোড হচ্ছে...";
                     const blob = new Blob(audioChunks, { type: 'audio/wav' });
-                    
                     const fd = new FormData();
                     fd.append('file', blob);
                     fd.append('upload_preset', UPLOAD_PRESET);
-
-                    const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: fd });
-                    const d = await r.json();
-                    
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: fd });
+                    const d = await res.json();
                     if (d.secure_url) {
                         await sendMentorReply(docId, 'voice', d.secure_url);
-                        log.innerText = "✅ ভয়েস রিপ্লাই সফলভাবে পাঠানো হয়েছে!";
-                    } else { log.innerText = "❌ আপলোড এরর!"; }
+                        log.innerText = "✅ সম্পন্ন!";
+                    }
                 };
-
                 audioRecorder.start();
-                btn.innerHTML = "<i class='fas fa-stop'></i> রেকর্ড বন্ধ করুন";
+                btn.innerHTML = "<i class='fas fa-stop'></i> বন্ধ করুন";
                 btn.classList.add('recording');
-                log.innerText = "রেকর্ডিং চলছে...";
-            } catch (err) { alert("মাইক্রোফোন পারমিশন দিন!"); }
+            } catch (err) { alert("মাইক্রোফোন চেক করুন!"); }
         } else {
             audioRecorder.stop();
-            btn.innerHTML = "<i class='fas fa-microphone'></i> রেকর্ড শুরু করুন";
+            btn.innerHTML = "<i class='fas fa-microphone'></i> রেকর্ড";
             btn.classList.remove('recording');
         }
     };
 
-    window.deleteDoc = async (id) => {
-        if (confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) {
-            await getRef('requests').doc(id).delete();
-        }
-    };
-
-    window.exitDashboard = async () => {
-        if (!isMaster) await setMyOnlineStatus("Offline");
-        location.reload();
-    };
+    window.deleteDoc = async (id) => { if (confirm("মুছবেন?")) await getRef('requests').doc(id).delete(); };
+    window.exitDashboard = async () => { if (!isMaster) await setMyOnlineStatus("Offline"); location.reload(); };
 
 </script>
 </body>
