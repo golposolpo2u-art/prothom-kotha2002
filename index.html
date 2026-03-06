@@ -52,7 +52,6 @@
             margin-top: 0;
             margin-bottom: 5px;
             text-align: center;
-            /* Removed heavy text-shadow/glow for better clarity */
         }
 
         .subtitle { 
@@ -293,7 +292,6 @@
             <label><input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb"> শুচিস্মিতা দাস নেহা</label>
             <label><input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb"> বিদিশা মুখার্জি</label>
             <label><input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb"> সঞ্জিত মল্লিক</label>
-            <!-- Removed Samun Islam -->
         </div>
 
         <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">অডিও ফাইল সিলেক্ট করুন:</label>
@@ -419,6 +417,7 @@
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', uploadPreset);
+        // Metadata append line is COMPLETELY REMOVED to avoid the External ID error
 
         try {
             const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
@@ -439,7 +438,7 @@
                 document.getElementById('uploadForm').reset();
                 progressFill.style.width = "0%";
             } else {
-                const errMsg = data.error ? data.error.message : "Upload rejected by Cloudinary";
+                const errMsg = data.error ? data.error.message : "Cloudinary check: Preset mismatch or Metadata error";
                 statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ভুল: ${errMsg}</span>`;
             }
         } catch (err) {
@@ -455,11 +454,10 @@
         const password = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
         let loggedInMentor = "";
 
-        // Mentor Passwords Mapping
         if (password === "Neha123") loggedInMentor = "শুচিস্মিতা দাস নেহা";
         else if (password === "Bidisha123") loggedInMentor = "বিদিশা মুখার্জি";
         else if (password === "Sanjit123") loggedInMentor = "সঞ্জিত মল্লিক";
-        else if (password === "Master2002") loggedInMentor = "All"; // Updated Master Password
+        else if (password === "Master2002") loggedInMentor = "All"; 
         else return alert("❌ ভুল পাসওয়ার্ড!");
 
         mainContainer.style.display = 'none';
