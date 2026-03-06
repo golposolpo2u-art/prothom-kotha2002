@@ -51,8 +51,8 @@
             font-size: 42px;
             margin-top: 0;
             margin-bottom: 5px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             text-align: center;
+            /* Removed heavy text-shadow/glow for better clarity */
         }
 
         .subtitle { 
@@ -270,7 +270,7 @@
 </head>
 <body>
 
-<!-- 1. MAIN UPLOAD SECTION (Open for everyone) -->
+<!-- 1. MAIN UPLOAD SECTION -->
 <div class="container" id="mainContainer">
     <h2>🎙️ প্রথম কথা</h2>
     <p class="subtitle">অ্যাডভান্সড অডিও কোয়ালিটি এবং এডিট চেকার</p>
@@ -293,7 +293,7 @@
             <label><input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb"> শুচিস্মিতা দাস নেহা</label>
             <label><input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb"> বিদিশা মুখার্জি</label>
             <label><input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb"> সঞ্জিত মল্লিক</label>
-            <label><input type="checkbox" value="সামুন ইসলাম" class="mentor-cb"> সামুন ইসলাম</label>
+            <!-- Removed Samun Islam -->
         </div>
 
         <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">অডিও ফাইল সিলেক্ট করুন:</label>
@@ -317,7 +317,7 @@
     <button id="mentorLoginBtn" class="btn-main" style="background: transparent; color: #b0c4de; border: 1px solid rgba(255,255,255,0.2);">🔒 মেন্টর ড্যাশবোর্ড প্যানেল</button>
 </div>
 
-<!-- 2. MENTOR DASHBOARD (Hidden default) -->
+<!-- 2. MENTOR DASHBOARD -->
 <div class="container mentor-area" id="mentorDashboard">
     <div class="top-bar">
         <span id="mentorNameDisplay" style="color: #00ffcc; font-weight: bold;"></span>
@@ -332,7 +332,6 @@
     </div>
 </div>
 
-<!-- Notification Audio (Ding sound) -->
 <audio id="notifySound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
 <!-- Firebase SDKs -->
@@ -348,21 +347,20 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. Cloudinary Config (Check these carefully!)
+    // 2. Cloudinary Config
     const cloudName = 'dy9bujsit'; 
     const uploadPreset = 'Prothom Kotha Voice';
 
     const mainContainer = document.getElementById('mainContainer');
     const mentorDashboard = document.getElementById('mentorDashboard');
 
-    // Request Notification Permission on load
     window.onload = function() {
         if (window.Notification && Notification.permission !== "granted") {
             Notification.requestPermission();
         }
     };
 
-    // --- SMART AUDIO SCANNER ---
+    // --- AUDIO SCANNER ---
     const audioInput = document.getElementById('audioInput');
     const submitBtn = document.getElementById('submitBtn');
     const scanArea = document.getElementById('scanArea');
@@ -379,12 +377,6 @@
 
         if (!file) {
             scanArea.style.display = 'none';
-            return;
-        }
-
-        if (file.size > 104857600) { 
-            alert("❌ ফাইলের সাইজ ১০০ MB এর বেশি!");
-            this.value = '';
             return;
         }
 
@@ -416,7 +408,6 @@
         
         const selectedMentors = [];
         document.querySelectorAll('.mentor-cb:checked').forEach(cb => selectedMentors.push(cb.value));
-
         if (selectedMentors.length === 0) return alert("দয়া করে অন্তত একজন মেন্টর সিলেক্ট করুন!");
 
         const uploaderName = document.getElementById('uploaderName').value;
@@ -430,7 +421,6 @@
         formData.append('upload_preset', uploadPreset);
 
         try {
-            // Using 'auto' instead of 'video' for better compatibility
             const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
                 method: 'POST',
                 body: formData
@@ -449,9 +439,8 @@
                 document.getElementById('uploadForm').reset();
                 progressFill.style.width = "0%";
             } else {
-                // Showing exact Cloudinary error message
-                const errMsg = data.error ? data.error.message : "Cloudinary preset or Cloud name mismatch";
-                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ক্লাউড আপলোড ব্যর্থ! কারণ: ${errMsg}</span>`;
+                const errMsg = data.error ? data.error.message : "Upload rejected by Cloudinary";
+                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ভুল: ${errMsg}</span>`;
             }
         } catch (err) {
             statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ কানেকশন এরর: ${err.message}</span>`;
@@ -466,11 +455,11 @@
         const password = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
         let loggedInMentor = "";
 
+        // Mentor Passwords Mapping
         if (password === "Neha123") loggedInMentor = "শুচিস্মিতা দাস নেহা";
         else if (password === "Bidisha123") loggedInMentor = "বিদিশা মুখার্জি";
         else if (password === "Sanjit123") loggedInMentor = "সঞ্জিত মল্লিক";
-        else if (password === "Samun123") loggedInMentor = "সামুন ইসলাম";
-        else if (password === "Master2024") loggedInMentor = "All"; 
+        else if (password === "Master2002") loggedInMentor = "All"; // Updated Master Password
         else return alert("❌ ভুল পাসওয়ার্ড!");
 
         mainContainer.style.display = 'none';
@@ -495,9 +484,7 @@
                     if (change.type === "added") {
                         const newDoc = change.doc.data();
                         if (mentorName === "All" || (newDoc.mentors && newDoc.mentors.includes(mentorName))) {
-                            const sound = document.getElementById('notifySound');
-                            sound.play().catch(() => {});
-                            
+                            document.getElementById('notifySound').play().catch(() => {});
                             if (window.Notification && Notification.permission === "granted") {
                                 new Notification("নতুন অডিও এসেছে!", {
                                     body: `পাঠিয়েছে: ${newDoc.uploaderName}\nফাইলের নাম: ${newDoc.fileName}`,
@@ -530,8 +517,7 @@
             if (count === 0) listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় কোনো নতুন অডিও আসেনি।</p>";
             initialLoadComplete = true;
         }, err => {
-            console.error("Firestore error:", err);
-            document.getElementById('requestList').innerHTML = `<p style='color:red;'>ডাটা লোড করতে সমস্যা হচ্ছে: ${err.message}</p>`;
+            document.getElementById('requestList').innerHTML = `<p style='color:red;'>ডাটা লোড এরর: ${err.message}</p>`;
         });
     }
 
