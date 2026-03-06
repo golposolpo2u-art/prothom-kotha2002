@@ -73,7 +73,7 @@
         }
 
         /* Forms & Inputs */
-        input[type="file"], input[type="text"] { 
+        input[type="file"], input[type="text"], textarea, select { 
             width: 100%; 
             margin: 10px 0 15px 0; 
             padding: 15px; 
@@ -120,7 +120,7 @@
         /* Mentor Checkbox Area */
         .checkbox-group {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 10px;
             margin-bottom: 20px;
             text-align: left;
@@ -128,12 +128,13 @@
 
         .checkbox-group label {
             background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px 15px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             border: 1px solid transparent;
             transition: 0.3s;
         }
@@ -143,10 +144,42 @@
             border-color: #00d2ff;
         }
 
+        .mentor-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-online { color: #00ffcc; }
+        .dot-online { background: #00ffcc; box-shadow: 0 0 5px #00ffcc; }
+        
+        .status-busy { color: #ffcc00; }
+        .dot-busy { background: #ffcc00; }
+        
+        .status-offline { color: #aaaaaa; }
+        .dot-offline { background: #aaaaaa; }
+
         .checkbox-group input[type="checkbox"] {
             margin-right: 10px;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             accent-color: #00d2ff;
         }
 
@@ -214,7 +247,7 @@
             background: rgba(30, 30, 30, 0.9); 
             padding: 15px; 
             border-radius: 10px; 
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
             border-left: 4px solid #00d2ff;
             position: relative;
         }
@@ -234,6 +267,93 @@
             outline: none;
         }
 
+        /* Reply Section Styling */
+        .reply-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reply-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .reply-tab {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            border: 1px solid transparent;
+        }
+
+        .reply-tab.active {
+            background: rgba(0, 210, 255, 0.2);
+            color: #00d2ff;
+            border-color: #00d2ff;
+        }
+
+        .reply-input-area textarea {
+            height: 60px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .voice-rec-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .voice-rec-btn.recording {
+            animation: pulse 1s infinite;
+            background: #ff0000;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .btn-send-reply {
+            background: #00ffcc;
+            color: #0f2027;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .existing-replies {
+            margin-top: 10px;
+            font-size: 13px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+        }
+
+        .reply-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            border-left: 2px solid #00ffcc;
+        }
+
         .btn-delete {
             background: #ff4d4d;
             color: white;
@@ -243,6 +363,32 @@
             cursor: pointer;
             margin-top: 10px;
             font-size: 12px;
+        }
+
+        /* Status Picker in Dashboard */
+        .status-picker-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-picker-container label {
+            font-size: 14px;
+            color: #00d2ff;
+            font-weight: bold;
+        }
+
+        .status-picker-container select {
+            width: auto;
+            margin: 0;
+            padding: 5px 10px;
+            background: #203a43;
+            color: white;
+            border: 1px solid #00d2ff;
         }
 
         /* Top Bar */
@@ -286,12 +432,41 @@
         <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">আপনার নাম:</label>
         <input type="text" id="uploaderName" placeholder="আপনার নাম লিখুন..." required>
 
-        <label style="font-weight: bold; margin-bottom: 10px; margin-top: 10px; display: block; color: #00d2ff; text-align: left;">কাকে পাঠাতে চান? (একাধিক সিলেক্ট করতে পারেন):</label>
+        <label style="font-weight: bold; margin-bottom: 10px; margin-top: 10px; display: block; color: #00d2ff; text-align: left;">কাকে পাঠাতে চান? (মেন্টরদের স্ট্যাটাস দেখে নিন):</label>
         
         <div class="checkbox-group">
-            <label><input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb"> শুচিস্মিতা দাস নেহা</label>
-            <label><input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb"> বিদিশা মুখার্জি</label>
-            <label><input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb"> সঞ্জিত মল্লিক</label>
+            <!-- Mentor 1 -->
+            <label>
+                <div class="mentor-info">
+                    <input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb">
+                    শুচিস্মিতা দাস নেহা
+                </div>
+                <div class="status-badge status-offline" id="status_শুচিস্মিতা দাস নেহা">
+                    <span class="status-dot dot-offline"></span> Loading...
+                </div>
+            </label>
+            
+            <!-- Mentor 2 -->
+            <label>
+                <div class="mentor-info">
+                    <input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb">
+                    বিদিশা মুখার্জি
+                </div>
+                <div class="status-badge status-offline" id="status_বিদিশা মুখার্জি">
+                    <span class="status-dot dot-offline"></span> Loading...
+                </div>
+            </label>
+            
+            <!-- Mentor 3 -->
+            <label>
+                <div class="mentor-info">
+                    <input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb">
+                    সঞ্জিত মল্লিক
+                </div>
+                <div class="status-badge status-offline" id="status_সঞ্জিত মল্লিক">
+                    <span class="status-dot dot-offline"></span> Loading...
+                </div>
+            </label>
         </div>
 
         <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">অডিও ফাইল সিলেক্ট করুন:</label>
@@ -319,7 +494,17 @@
 <div class="container mentor-area" id="mentorDashboard">
     <div class="top-bar">
         <span id="mentorNameDisplay" style="color: #00ffcc; font-weight: bold;"></span>
-        <button onclick="location.reload()" class="logout-btn">প্যানেল বন্ধ করুন</button>
+        <button onclick="logoutMentor()" class="logout-btn">প্যানেল বন্ধ করুন</button>
+    </div>
+
+    <!-- Mentor Status Picker -->
+    <div class="status-picker-container">
+        <label>আপনার বর্তমান অবস্থা:</label>
+        <select id="mentorStatusSelect" onchange="updateMentorStatus(this.value)">
+            <option value="Online">Online ✅</option>
+            <option value="Busy">Busy ⛔</option>
+            <option value="Offline">Offline 🌑</option>
+        </select>
     </div>
 
     <h3>🎧 মেন্টর কন্ট্রোল প্যানেল</h3>
@@ -335,30 +520,71 @@
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
-    /* VERSION: 2.1 - Metadata Fix Applied */
+    /* VERSION: 4.0 - Real-time Status System Added */
     
-    // 1. Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCjrGdZMocegvJBIXKI5UKAfzFK7k3-iKI", 
         projectId: "prothomkotha-2002"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
-    // 2. Cloudinary Config
-    const cloudName = 'dy9bujsit'; 
-    const uploadPreset = 'Prothom Kotha Voice';
+    const auth = firebase.auth();
+    const appId = "prothom-kotha2002";
 
     const mainContainer = document.getElementById('mainContainer');
     const mentorDashboard = document.getElementById('mentorDashboard');
 
-    window.onload = function() {
+    // Rule 3: Auth Before Queries
+    window.onload = async function() {
+        await auth.signInAnonymously().catch(e => console.error("Auth error:", e));
+        
         if (window.Notification && Notification.permission !== "granted") {
             Notification.requestPermission();
         }
+        
+        // Start listening for mentor statuses
+        listenForMentorStatuses();
     };
+
+    // --- MENTOR STATUS LISTENER (User Side) ---
+    function listenForMentorStatuses() {
+        // Rule 1: Public path for statuses
+        const statusCollection = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('mentorStatus');
+        
+        statusCollection.onSnapshot(snapshot => {
+            // Default everything to Offline first
+            const mentors = ["শুচিস্মিতা দাস নেহা", "বিদিশা মুখার্জি", "সঞ্জিত মল্লিক"];
+            mentors.forEach(name => {
+                updateStatusUI(name, "Offline");
+            });
+
+            snapshot.forEach(doc => {
+                const name = doc.id;
+                const data = doc.data();
+                if (data && data.status) {
+                    updateStatusUI(name, data.status);
+                }
+            });
+        });
+    }
+
+    function updateStatusUI(mentorName, status) {
+        const badge = document.getElementById(`status_${mentorName}`);
+        if (!badge) return;
+
+        badge.className = `status-badge status-${status.toLowerCase()}`;
+        const dotClass = `status-dot dot-${status.toLowerCase()}`;
+        
+        let statusText = status;
+        if (status === "Online") statusText = "Online ✅";
+        if (status === "Busy") statusText = "Busy ⛔";
+        if (status === "Offline") statusText = "Offline 🌑";
+
+        badge.innerHTML = `<span class="${dotClass}"></span> ${statusText}`;
+    }
 
     // --- AUDIO SCANNER ---
     const audioInput = document.getElementById('audioInput');
@@ -418,67 +644,93 @@
 
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', uploadPreset);
-        // NO METADATA APPENDED HERE
+        formData.append('upload_preset', 'Prothom Kotha Voice');
 
         try {
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+            const res = await fetch(`https://api.cloudinary.com/v1_1/dy9bujsit/auto/upload`, {
                 method: 'POST',
                 body: formData
             });
             const data = await res.json();
 
             if (data.secure_url) {
-                await db.collection('requests').add({
+                // Public data path
+                await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('requests').add({
                     audioUrl: data.secure_url,
                     mentors: selectedMentors, 
                     uploaderName: uploaderName,
                     fileName: file.name,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    replies: []
                 });
                 statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! মেন্টরদের পাঠানো হয়েছে।</span>";
                 document.getElementById('uploadForm').reset();
                 progressFill.style.width = "0%";
             } else {
-                const errMsg = data.error ? data.error.message : "Upload rejected by Cloudinary";
-                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ভুল: ${errMsg}</span>`;
-                console.error("Cloudinary Error:", data);
+                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ভুল: আপলোড রিজেক্ট হয়েছে।</span>`;
             }
         } catch (err) {
             statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ কানেকশন এরর: ${err.message}</span>`;
-            console.error("Network Error:", err);
         }
         submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
     });
 
-    // --- MENTOR DASHBOARD ---
+    // --- MENTOR DASHBOARD LOGIC ---
     let initialLoadComplete = false;
+    let currentMentorName = "";
+    let mediaRecorder;
+    let audioChunks = [];
 
-    document.getElementById('mentorLoginBtn').addEventListener('click', () => {
+    document.getElementById('mentorLoginBtn').addEventListener('click', async () => {
         const password = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
-        let loggedInMentor = "";
-
-        if (password === "Neha123") loggedInMentor = "শুচিস্মিতা দাস নেহা";
-        else if (password === "Bidisha123") loggedInMentor = "বিদিশা মুখার্জি";
-        else if (password === "Sanjit123") loggedInMentor = "সঞ্জিত মল্লিক";
-        else if (password === "Master2002") loggedInMentor = "All"; 
+        
+        if (password === "Neha123") currentMentorName = "শুচিস্মিতা দাস নেহা";
+        else if (password === "Bidisha123") currentMentorName = "বিদিশা মুখার্জি";
+        else if (password === "Sanjit123") currentMentorName = "সঞ্জিত মল্লিক";
+        else if (password === "Master2002") currentMentorName = "All"; 
         else return alert("❌ ভুল পাসওয়ার্ড!");
 
         mainContainer.style.display = 'none';
         mentorDashboard.style.display = 'block';
-        document.getElementById('mentorNameDisplay').innerText = (loggedInMentor === "All") ? "👤 অ্যাডমিন প্যানেল" : `👤 মেন্টর: ${loggedInMentor}`;
+        document.getElementById('mentorNameDisplay').innerText = (currentMentorName === "All") ? "👤 অ্যাডমিন প্যানেল" : `👤 মেন্টর: ${currentMentorName}`;
         
-        loadMentorData(loggedInMentor);
+        // Auto-set status to Online on login
+        if (currentMentorName !== "All") {
+            updateMentorStatus("Online");
+            document.getElementById('mentorStatusSelect').value = "Online";
+        } else {
+            document.querySelector('.status-picker-container').style.display = 'none';
+        }
+
+        loadMentorData(currentMentorName);
     });
+
+    async function updateMentorStatus(status) {
+        if (!currentMentorName || currentMentorName === "All") return;
+        
+        // Rule 1: Public path for statuses
+        const statusDoc = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('mentorStatus').doc(currentMentorName);
+        
+        try {
+            await statusDoc.set({ status: status, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() });
+        } catch (e) { console.error("Status update error:", e); }
+    }
+
+    async function logoutMentor() {
+        if (currentMentorName && currentMentorName !== "All") {
+            await updateMentorStatus("Offline");
+        }
+        location.reload();
+    }
 
     function loadMentorData(mentorName) {
         const last24h = new Date();
         last24h.setHours(last24h.getHours() - 24);
 
-        db.collection('requests')
-          .where('timestamp', '>=', last24h)
-          .orderBy('timestamp', 'desc')
-          .onSnapshot(snapshot => {
+        // Rule 1: Requests path
+        const requestsCollection = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('requests');
+        
+        requestsCollection.where('timestamp', '>=', last24h).orderBy('timestamp', 'desc').onSnapshot(snapshot => {
             const listDiv = document.getElementById('requestList');
             
             if (initialLoadComplete) {
@@ -489,8 +741,7 @@
                             document.getElementById('notifySound').play().catch(() => {});
                             if (window.Notification && Notification.permission === "granted") {
                                 new Notification("নতুন অডিও এসেছে!", {
-                                    body: `পাঠিয়েছে: ${newDoc.uploaderName}\nফাইলের নাম: ${newDoc.fileName}`,
-                                    icon: "https://cdn-icons-png.flaticon.com/512/3594/3594095.png"
+                                    body: `পাঠিয়েছে: ${newDoc.uploaderName}\nফাইলের নাম: ${newDoc.fileName}`
                                 });
                             }
                         }
@@ -505,13 +756,47 @@
                 if (mentorName !== "All" && (!data.mentors || !data.mentors.includes(mentorName))) return; 
 
                 count++;
+                const docId = doc.id;
+                const replies = data.replies || [];
+                
+                let repliesHtml = "";
+                replies.forEach(r => {
+                    if(r.type === 'text') {
+                        repliesHtml += `<div class="reply-item"><b>${r.mentor}:</b> ${r.content}</div>`;
+                    } else {
+                        repliesHtml += `<div class="reply-item"><b>${r.mentor}:</b> <audio controls src="${r.content}" style="height:30px;"></audio></div>`;
+                    }
+                });
+
                 listDiv.innerHTML += `
                     <div class="audio-card">
                         <span class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : "Just now"}</span>
                         <p style="margin:0 0 5px 0; color:#00d2ff; font-weight:bold;">পাঠিয়েছে: ${data.uploaderName || "Unknown"}</p>
                         <p style="margin:0 0 5px 0; color:#bb86fc; font-size:13px;">মেন্টর: ${data.mentors.join(', ')}</p>
                         <audio controls src="${data.audioUrl}"></audio>
-                        <button class="btn-delete" onclick="deleteRecord('${doc.id}')">🗑️ মুছুন</button>
+                        
+                        <div class="reply-box">
+                            <div class="reply-tabs">
+                                <div class="reply-tab active" onclick="switchReplyTab('${docId}', 'text')">টেক্সট রিপ্লাই</div>
+                                <div class="reply-tab" onclick="switchReplyTab('${docId}', 'voice')">ভয়েস রিপ্লাই</div>
+                            </div>
+                            
+                            <div id="textInput_${docId}" class="reply-input-area">
+                                <textarea id="replyText_${docId}" placeholder="আপনার ফিডব্যাক লিখুন..."></textarea>
+                                <button class="btn-send-reply" onclick="sendTextReply('${docId}')">টেক্সট পাঠান</button>
+                            </div>
+                            
+                            <div id="voiceInput_${docId}" class="reply-input-area" style="display:none;">
+                                <button id="recBtn_${docId}" class="voice-rec-btn" onclick="toggleRecording('${docId}')">🎙️ রেকর্ড শুরু করুন</button>
+                                <div id="recStatus_${docId}" style="font-size:12px; text-align:center;"></div>
+                            </div>
+
+                            <div class="existing-replies" id="replies_${docId}">
+                                ${repliesHtml}
+                            </div>
+                        </div>
+
+                        <button class="btn-delete" onclick="deleteRecord('${docId}')">🗑️ মুছুন</button>
                     </div>
                 `;
             });
@@ -519,13 +804,75 @@
             if (count === 0) listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় কোনো নতুন অডিও আসেনি।</p>";
             initialLoadComplete = true;
         }, err => {
-            document.getElementById('requestList').innerHTML = `<p style='color:red;'>ডাটা লোড এরর: ${err.message}</p>`;
+            console.error("Firestore error:", err);
         });
+    }
+
+    // --- REPLY & VOICE LOGIC ---
+    window.switchReplyTab = function(docId, type) {
+        const card = event.target.closest('.reply-box');
+        card.querySelectorAll('.reply-tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(`textInput_${docId}`).style.display = (type === 'text') ? 'block' : 'none';
+        document.getElementById(`voiceInput_${docId}`).style.display = (type === 'voice') ? 'block' : 'none';
+    }
+
+    window.sendTextReply = async function(docId) {
+        const text = document.getElementById(`replyText_${docId}`).value;
+        if(!text) return alert("কিছু লিখুন!");
+        const btn = event.target;
+        btn.disabled = true;
+        try {
+            await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('requests').doc(docId).update({
+                replies: firebase.firestore.FieldValue.arrayUnion({
+                    mentor: currentMentorName, type: 'text', content: text, at: new Date()
+                })
+            });
+            document.getElementById(`replyText_${docId}`).value = "";
+        } catch(e) { console.error(e); }
+        btn.disabled = false;
+    }
+
+    window.toggleRecording = async function(docId) {
+        const btn = document.getElementById(`recBtn_${docId}`);
+        const status = document.getElementById(`recStatus_${docId}`);
+        if (!mediaRecorder || mediaRecorder.state === "inactive") {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    status.innerText = "⏳ আপলোড হচ্ছে...";
+                    const formData = new FormData();
+                    formData.append('file', audioBlob);
+                    formData.append('upload_preset', 'Prothom Kotha Voice');
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/dy9bujsit/auto/upload`, { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if(data.secure_url) {
+                        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('requests').doc(docId).update({
+                            replies: firebase.firestore.FieldValue.arrayUnion({
+                                mentor: currentMentorName, type: 'voice', content: data.secure_url, at: new Date()
+                            })
+                        });
+                        status.innerText = "✅ ভয়েস রিপ্লাই পাঠানো হয়েছে!";
+                    }
+                };
+                mediaRecorder.start();
+                btn.innerText = "🛑 রেকর্ড বন্ধ করুন";
+                btn.classList.add('recording');
+            } catch (err) { alert("Microphone error!"); }
+        } else {
+            mediaRecorder.stop();
+            btn.innerText = "🎙️ রেকর্ড শুরু করুন";
+            btn.classList.remove('recording');
+        }
     }
 
     window.deleteRecord = async function(docId) {
         if(confirm("অডিওটি কি লিস্ট থেকে মুছে ফেলতে চান?")) {
-            await db.collection('requests').doc(docId).delete();
+            await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('requests').doc(docId).delete();
         }
     }
 </script>
