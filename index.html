@@ -151,7 +151,7 @@
             accent-color: #00d2ff;
         }
 
-        /* AI Scan Progress Bar Area */
+        /* AI Scan Progress Area */
         .scan-area {
             display: none;
             background: rgba(0, 0, 0, 0.6);
@@ -187,8 +187,9 @@
         #status { 
             margin-top: 15px; 
             font-weight: bold; 
-            font-size: 16px;
+            font-size: 14px;
             text-align: center;
+            word-break: break-all;
         }
 
         /* Mentor Dashboard Area */
@@ -288,7 +289,6 @@
 
         <label style="font-weight: bold; margin-bottom: 10px; margin-top: 10px; display: block; color: #00d2ff; text-align: left;">কাকে পাঠাতে চান? (একাধিক সিলেক্ট করতে পারেন):</label>
         
-        <!-- Checkbox Mentors -->
         <div class="checkbox-group">
             <label><input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb"> শুচিস্মিতা দাস নেহা</label>
             <label><input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb"> বিদিশা মুখার্জি</label>
@@ -299,7 +299,6 @@
         <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">অডিও ফাইল সিলেক্ট করুন:</label>
         <input type="file" id="audioInput" accept="audio/*" required>
         
-        <!-- AI Scan Progress Area -->
         <div id="scanArea" class="scan-area">
             <div id="scanLog1" class="scan-log">⏳ Initializing Smart Scan...</div>
             <div id="scanLog2" class="scan-log"></div>
@@ -336,7 +335,7 @@
 <!-- Notification Audio (Ding sound) -->
 <audio id="notifySound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
-<!-- Firebase SDKs (Only Core & Firestore needed now) -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
@@ -349,19 +348,19 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. Cloudinary Config
+    // 2. Cloudinary Config (Check these carefully!)
     const cloudName = 'dy9bujsit'; 
     const uploadPreset = 'Prothom Kotha Voice';
 
     const mainContainer = document.getElementById('mainContainer');
     const mentorDashboard = document.getElementById('mentorDashboard');
 
-    // Request Background Notification Permission
-    function requestNotifyPermission() {
+    // Request Notification Permission on load
+    window.onload = function() {
         if (window.Notification && Notification.permission !== "granted") {
             Notification.requestPermission();
         }
-    }
+    };
 
     // --- SMART AUDIO SCANNER ---
     const audioInput = document.getElementById('audioInput');
@@ -380,120 +379,89 @@
 
         if (!file) {
             scanArea.style.display = 'none';
-            submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
             return;
         }
 
-        if (file.size > 104857600) { // 100 MB Limit
+        if (file.size > 104857600) { 
             alert("❌ ফাইলের সাইজ ১০০ MB এর বেশি!");
             this.value = '';
-            submitBtn.innerHTML = "ফাইল অনেক বড়";
             return;
         }
 
         scanArea.style.display = 'block';
-        document.getElementById('scanLog1').innerText = `[1/3] File: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)...`;
-        document.getElementById('scanLog2').innerText = "";
-        document.getElementById('scanLog3').innerText = "";
+        document.getElementById('scanLog1').innerText = `[1/3] File: ${file.name}...`;
         progressFill.style.width = "10%";
 
         setTimeout(() => {
             progressFill.style.width = "40%";
-            document.getElementById('scanLog2').innerText = "[2/3] Checking for background music footprints...";
-            
+            document.getElementById('scanLog2').innerText = "[2/3] Checking audio integrity...";
             setTimeout(() => {
                 progressFill.style.width = "75%";
-                document.getElementById('scanLog3').innerText = "[3/3] Analyzing audio spectral data for edits...";
-                
+                document.getElementById('scanLog3').innerText = "[3/3] AI scanning for background noise...";
                 setTimeout(() => {
                     progressFill.style.width = "100%";
-                    document.getElementById('scanLog3').innerText = "[Complete] File looks clean. Ready to upload.";
+                    document.getElementById('scanLog3').innerText = "[Complete] Ready to upload.";
                     document.getElementById('scanLog3').style.color = "#00ff00";
                     isFileScanned = true;
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = "অডিও আপলোড করুন";
-                }, 1500);
-            }, 1500);
-        }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 800);
     });
 
     // --- UPLOAD LOGIC ---
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        if (!isFileScanned) return alert("দয়া করে ফাইল স্ক্যান শেষ হওয়া পর্যন্ত অপেক্ষা করুন!");
-        
         const selectedMentors = [];
-        document.querySelectorAll('.mentor-cb:checked').forEach(cb => {
-            selectedMentors.push(cb.value);
-        });
+        document.querySelectorAll('.mentor-cb:checked').forEach(cb => selectedMentors.push(cb.value));
 
         if (selectedMentors.length === 0) return alert("দয়া করে অন্তত একজন মেন্টর সিলেক্ট করুন!");
 
         const uploaderName = document.getElementById('uploaderName').value;
         const file = audioInput.files[0];
-        statusDiv.innerHTML = "⏳ ক্লাউড সার্ভারে আপলোড হচ্ছে... দয়া করে ব্রাউজার কাটবেন না।";
+        statusDiv.innerHTML = "⏳ ক্লাউড সার্ভারে আপলোড হচ্ছে...";
         submitBtn.disabled = true;
         scanArea.style.display = 'none';
 
-        const expirationTime = Math.floor(Date.now() / 1000) + (24 * 60 * 60);
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', uploadPreset);
-        formData.append('metadata', `media_metadata_expiration_time=${expirationTime}`);
 
         try {
-            const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+            // Using 'auto' instead of 'video' for better compatibility
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
                 method: 'POST',
                 body: formData
             });
             const data = await res.json();
 
             if (data.secure_url) {
-                // Save to Firestore with Uploader Name
-                try {
-                    await db.collection('requests').add({
-                        audioUrl: data.secure_url,
-                        mentors: selectedMentors, 
-                        uploaderName: uploaderName,
-                        fileName: file.name,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! অডিওটি মেন্টরের কাছে পাঠানো হয়েছে।</span>";
-                    document.getElementById('uploadForm').reset();
-                    progressFill.style.width = "0%";
-                } catch(fsErr) {
-                    // This error shows if Firebase Rules are not updated
-                    statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ডাটাবেস এরর: Firebase-এর Rules সেটআপ ঠিক নেই! (${fsErr.message})</span>`;
-                }
+                await db.collection('requests').add({
+                    audioUrl: data.secure_url,
+                    mentors: selectedMentors, 
+                    uploaderName: uploaderName,
+                    fileName: file.name,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! মেন্টরদের পাঠানো হয়েছে।</span>";
+                document.getElementById('uploadForm').reset();
+                progressFill.style.width = "0%";
             } else {
-                // This error shows if Cloudinary fails
-                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ক্লাউড আপলোড ব্যর্থ! কারণ: ${data.error ? data.error.message : "Unknown error"}</span>`;
+                // Showing exact Cloudinary error message
+                const errMsg = data.error ? data.error.message : "Cloudinary preset or Cloud name mismatch";
+                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ক্লাউড আপলোড ব্যর্থ! কারণ: ${errMsg}</span>`;
             }
         } catch (err) {
-            statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ এরর: ইন্টারনেট সমস্যা বা অন্য ত্রুটি! " + err.message + "</span>";
+            statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ কানেকশন এরর: ${err.message}</span>`;
         }
         submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
     });
 
-    // --- MENTOR DASHBOARD & NOTIFICATIONS ---
+    // --- MENTOR DASHBOARD ---
     let initialLoadComplete = false;
 
-    function playNotifySound() {
-        const sound = document.getElementById('notifySound');
-        sound.play().catch(e => console.log("Sound play blocked."));
-    }
-
-    function showBrowserNotification(fileName, uploader) {
-        if (window.Notification && Notification.permission === "granted") {
-            new Notification("নতুন অডিও এসেছে!", {
-                body: `পাঠিয়েছে: ${uploader}\nফাইলের নাম: ${fileName}\nদয়া করে ড্যাশবোর্ড চেক করুন।`,
-                icon: "https://cdn-icons-png.flaticon.com/512/3594/3594095.png"
-            });
-        }
-    }
-
-    // Mentor Passwords Setup
     document.getElementById('mentorLoginBtn').addEventListener('click', () => {
         const password = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
         let loggedInMentor = "";
@@ -502,21 +470,16 @@
         else if (password === "Bidisha123") loggedInMentor = "বিদিশা মুখার্জি";
         else if (password === "Sanjit123") loggedInMentor = "সঞ্জিত মল্লিক";
         else if (password === "Samun123") loggedInMentor = "সামুন ইসলাম";
-        else if (password === "Master2024") loggedInMentor = "All"; // Admin Password
-        else {
-            return alert("❌ ভুল পাসওয়ার্ড! দয়া করে সঠিক পাসওয়ার্ড দিন।");
-        }
+        else if (password === "Master2024") loggedInMentor = "All"; 
+        else return alert("❌ ভুল পাসওয়ার্ড!");
 
         mainContainer.style.display = 'none';
         mentorDashboard.style.display = 'block';
-        
         document.getElementById('mentorNameDisplay').innerText = (loggedInMentor === "All") ? "👤 অ্যাডমিন প্যানেল" : `👤 মেন্টর: ${loggedInMentor}`;
         
-        requestNotifyPermission();
         loadMentorData(loggedInMentor);
     });
 
-    // Only load data for the logged in mentor
     function loadMentorData(mentorName) {
         const last24h = new Date();
         last24h.setHours(last24h.getHours() - 24);
@@ -527,53 +490,48 @@
           .onSnapshot(snapshot => {
             const listDiv = document.getElementById('requestList');
             
-            // Handle new notifications targeting ONLY this mentor
             if (initialLoadComplete) {
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added") {
                         const newDoc = change.doc.data();
-                        // Check if it's meant for Admin ("All") OR the specific mentor
                         if (mentorName === "All" || (newDoc.mentors && newDoc.mentors.includes(mentorName))) {
-                            playNotifySound();
-                            showBrowserNotification(newDoc.fileName || "New Audio", newDoc.uploaderName || "Unknown");
+                            const sound = document.getElementById('notifySound');
+                            sound.play().catch(() => {});
+                            
+                            if (window.Notification && Notification.permission === "granted") {
+                                new Notification("নতুন অডিও এসেছে!", {
+                                    body: `পাঠিয়েছে: ${newDoc.uploaderName}\nফাইলের নাম: ${newDoc.fileName}`,
+                                    icon: "https://cdn-icons-png.flaticon.com/512/3594/3594095.png"
+                                });
+                            }
                         }
                     }
                 });
             }
 
             listDiv.innerHTML = "";
-
             let count = 0;
             snapshot.forEach(doc => {
                 const data = doc.data();
-                
-                // Skip rendering if this audio wasn't sent to this mentor
-                if (mentorName !== "All" && (!data.mentors || !data.mentors.includes(mentorName))) {
-                    return; 
-                }
+                if (mentorName !== "All" && (!data.mentors || !data.mentors.includes(mentorName))) return; 
 
                 count++;
-                const docId = doc.id;
-                const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now";
-                const mentorNames = data.mentors ? data.mentors.join(', ') : "সবাই";
-                const uploader = data.uploaderName || "Unknown";
-
                 listDiv.innerHTML += `
                     <div class="audio-card">
-                        <span class="timestamp">${timeStr}</span>
-                        <p style="margin:0 0 5px 0; color:#00d2ff; font-size:16px; font-weight:bold;">পাঠিয়েছে: ${uploader}</p>
-                        <p style="margin:0 0 5px 0; color:#bb86fc; font-size:14px;">কাকে পাঠিয়েছে: ${mentorNames}</p>
+                        <span class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : "Just now"}</span>
+                        <p style="margin:0 0 5px 0; color:#00d2ff; font-weight:bold;">পাঠিয়েছে: ${data.uploaderName || "Unknown"}</p>
+                        <p style="margin:0 0 5px 0; color:#bb86fc; font-size:13px;">মেন্টর: ${data.mentors.join(', ')}</p>
                         <audio controls src="${data.audioUrl}"></audio>
-                        <button class="btn-delete" onclick="deleteRecord('${docId}')">🗑️ লিস্ট থেকে মুছুন</button>
+                        <button class="btn-delete" onclick="deleteRecord('${doc.id}')">🗑️ মুছুন</button>
                     </div>
                 `;
             });
 
-            if (count === 0) {
-                listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় আপনার জন্য নতুন কোনো অডিও আসেনি।</p>";
-            }
-            
+            if (count === 0) listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় কোনো নতুন অডিও আসেনি।</p>";
             initialLoadComplete = true;
+        }, err => {
+            console.error("Firestore error:", err);
+            document.getElementById('requestList').innerHTML = `<p style='color:red;'>ডাটা লোড করতে সমস্যা হচ্ছে: ${err.message}</p>`;
         });
     }
 
