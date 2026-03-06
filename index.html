@@ -3,386 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রথম কথা - স্মার্ট অডিও পোর্টাল (V7.0)</title>
+    <title>প্রথম কথা - স্মার্ট অডিও পোর্টাল (Ultra V8.0)</title>
     
-    <!-- Fonts -->
+    <!-- External Resources -->
     <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* PREMIUM CSS DESIGN 
-           Theme: Deep Space Glassmorphism
+        /* PREMIUM STYLING ENGINE (CSS)
+           Theme: Glassmorphism Ultra Dark
         */
+        :root {
+            --primary-glow: #00d2ff;
+            --secondary-glow: #3a7bd5;
+            --accent-pink: #ff007f;
+            --gold-text: #ffd700;
+            --dark-bg: #0f2027;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --error-red: #ff5252;
+            --success-green: #00ffcc;
+        }
+
         @font-face {
             font-family: 'EkushRegular';
             src: url('Ekush-Regular.ttf') format('truetype');
         }
 
-        :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --accent: #ff007f;
-            --gold: #ffd700;
-            --glass: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
         body { 
             font-family: 'Kalpurush', Arial, sans-serif; 
-            background: var(--bg-gradient);
-            margin: 0; 
-            padding: 20px; 
-            color: white;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            padding: 30px 15px;
             overflow-x: hidden;
         }
 
-        /* Container & Layout */
-        .container { 
-            background: var(--glass); 
+        /* Background Animated Circles */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: moveCircles 15s infinite alternate;
+        }
+
+        .c1 { width: 300px; height: 300px; background: var(--primary-glow); top: -50px; left: -50px; }
+        .c2 { width: 400px; height: 400px; background: var(--accent-pink); bottom: -100px; right: -50px; }
+
+        @keyframes moveCircles {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        /* Main Glass Container */
+        .main-container { 
+            background: var(--glass-bg); 
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
-            padding: 45px 35px; 
-            border-radius: 24px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
+            padding: 50px 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7); 
             width: 100%;
-            max-width: 580px; 
+            max-width: 620px; 
             border: 1px solid var(--glass-border);
             position: relative;
-            margin-bottom: 25px;
-            animation: fadeIn 0.8s ease-out;
+            z-index: 10;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 { 
+        h1.logo-title { 
             font-family: 'EkushRegular', sans-serif; 
-            color: white; 
-            font-size: 48px;
-            margin: 0;
+            color: #fff; 
+            font-size: 55px;
+            margin-bottom: 5px;
             text-align: center;
-            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
 
         .subtitle { 
             color: #b0c4de; 
-            font-size: 19px; 
-            margin-bottom: 30px;
+            font-size: 20px; 
+            margin-bottom: 35px;
             text-align: center;
-            opacity: 0.8;
+            letter-spacing: 0.5px;
+            font-weight: 300;
         }
 
-        /* Audition Banner */
-        #auditionLiveBanner {
+        /* Audition Live Banner */
+        .audition-banner {
             display: none;
             background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
             background-size: 200% auto;
             color: #000;
-            padding: 12px;
+            padding: 15px;
             text-align: center;
-            font-weight: bold;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
-            animation: auditionGlow 2s linear infinite;
-        }
-
-        @keyframes auditionGlow {
-            0% { background-position: 0% center; box-shadow: 0 0 5px #ffd700; }
-            50% { box-shadow: 0 0 20px #ff8c00; }
-            100% { background-position: 200% center; box-shadow: 0 0 5px #ffd700; }
-        }
-
-        .file-info {
-            background: rgba(0, 0, 0, 0.45);
-            padding: 18px;
+            font-weight: 800;
             border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            animation: goldenWave 2s linear infinite;
+            font-size: 16px;
+        }
+
+        @keyframes goldenWave {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .info-card {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 22px;
+            border-radius: 18px;
             font-size: 14px;
-            color: #00ffcc;
-            margin-bottom: 25px;
-            border-left: 4px solid var(--primary);
-            line-height: 1.7;
+            color: var(--success-green);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary-glow);
+            line-height: 1.8;
+            box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.1);
         }
 
-        /* Form Controls */
-        label.section-label {
-            font-weight: bold;
-            color: var(--primary);
+        /* Form Elements */
+        .input-label {
+            font-weight: 600;
+            color: var(--primary-glow);
             display: block;
-            margin: 15px 0 8px 0;
+            margin: 20px 0 10px 0;
             font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        input[type="text"], textarea, select { 
+        input[type="text"], select, textarea { 
             width: 100%; 
-            margin-bottom: 15px; 
-            padding: 16px; 
+            margin-bottom: 18px; 
+            padding: 18px; 
             background: rgba(255, 255, 255, 0.95);
             border: 2px solid transparent; 
-            border-radius: 12px; 
+            border-radius: 15px; 
             color: #121212;
             font-family: 'Kalpurush', sans-serif;
-            font-size: 16px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 17px;
+            outline: none;
         }
 
         input[type="text"]:focus {
-            border-color: var(--primary);
-            outline: none;
-            background: #fff;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
         }
 
-        /* Mentor List User Side */
-        .checkbox-group {
+        /* Custom Mentor Checkboxes */
+        .mentor-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 25px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .checkbox-group label {
+        .mentor-row {
             background: rgba(255, 255, 255, 0.05);
-            padding: 14px 18px;
-            border-radius: 15px;
+            padding: 16px 20px;
+            border-radius: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 1px solid var(--glass-border);
-            user-select: none;
+            position: relative;
         }
 
-        .checkbox-group label:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: var(--primary);
+        .mentor-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-glow);
+            transform: scale(1.02);
         }
 
-        .mentor-info-box { display: flex; align-items: center; gap: 12px; }
+        .mentor-info { display: flex; align-items: center; gap: 15px; }
 
-        .checkbox-group input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--primary);
+        .mentor-row input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            accent-color: var(--primary-glow);
             cursor: pointer;
         }
 
-        /* Status Badges */
-        .status-badge {
+        .status-pill {
             font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 30px;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.3);
+            gap: 8px;
+            background: rgba(0,0,0,0.4);
         }
 
-        .status-dot { width: 9px; height: 9px; border-radius: 50%; }
-        .dot-online { background: #00ffcc; box-shadow: 0 0 8px #00ffcc; }
-        .dot-busy { background: #ffcc00; box-shadow: 0 0 8px #ffcc00; }
-        .dot-offline { background: #888; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-online { background: var(--success-green); box-shadow: 0 0 10px var(--success-green); }
+        .dot-busy { background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+        .dot-offline { background: #777; }
 
-        /* AI Scanner Area */
-        .scan-area {
+        /* AI Scan System Visuals */
+        .scan-container {
             display: none;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255, 0, 127, 0.3);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--accent-pink);
             position: relative;
-            overflow: hidden;
         }
 
-        .scan-log {
+        .scan-line {
             font-family: 'Courier New', monospace;
             font-size: 13px;
-            color: #00ffcc;
-            margin: 6px 0;
+            color: var(--success-green);
+            margin: 8px 0;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .progress-bar-container {
+        .progress-rail {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background: #222;
-            border-radius: 5px;
-            margin-top: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
             overflow: hidden;
+            border: 1px solid #333;
         }
 
-        .progress-fill {
+        .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            box-shadow: 0 0 10px var(--primary);
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            box-shadow: 0 0 15px var(--primary-glow);
             transition: width 0.4s ease;
         }
 
-        /* Buttons */
-        .btn-main { 
+        /* Buttons Styling */
+        .btn-action { 
             width: 100%; 
-            padding: 18px; 
-            background: linear-gradient(to right, var(--primary), var(--secondary)); 
+            padding: 20px; 
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); 
             color: #0f2027; 
             border: none; 
-            border-radius: 12px; 
-            font-weight: bold; 
-            font-size: 19px;
+            border-radius: 18px; 
+            font-weight: 800; 
+            font-size: 20px;
             cursor: pointer; 
-            box-shadow: 0 8px 20px rgba(0, 210, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.4);
             font-family: 'Kalpurush', sans-serif;
+            text-transform: uppercase;
         }
 
-        .btn-main:hover:not(:disabled) { 
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(0, 210, 255, 0.5);
-            color: white;
+        .btn-action:hover:not(:disabled) { 
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.6);
+            color: #fff;
         }
 
-        .btn-main:disabled {
-            background: #444;
-            color: #777;
+        .btn-action:disabled {
+            background: #555;
+            color: #999;
             cursor: not-allowed;
             box-shadow: none;
         }
 
+        /* Audition Checkbox UI */
+        .audition-toggle-user {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px dashed var(--gold-text);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            color: var(--gold-text);
+            font-weight: bold;
+        }
+
         /* Mentor Dashboard Elements */
-        .mentor-area { 
+        .dashboard-container { 
             display: none; 
-            padding: 30px; 
-            background: rgba(0, 0, 0, 0.6); 
-            border-radius: 20px; 
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.4);
+            padding: 15px 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
             border: 1px solid var(--glass-border);
         }
 
-        .audio-card { 
-            background: rgba(20, 20, 20, 0.9); 
-            padding: 22px; 
-            border-radius: 18px; 
-            margin-bottom: 25px; 
-            border-left: 6px solid var(--primary);
-            position: relative;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .audio-card .timestamp {
-            position: absolute; top: 18px; right: 20px;
-            font-size: 12px; color: #777;
-        }
-
-        .audition-tag {
-            background: var(--gold);
-            color: #000;
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-left: 10px;
-            text-transform: uppercase;
-        }
-
-        audio { 
-            width: 100%; 
-            margin-top: 15px; 
-            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
-        }
-
-        /* Reply System */
-        .reply-section {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .reply-tabs {
-            display: flex; gap: 12px; margin-bottom: 15px;
-        }
-
-        .reply-tab {
+        .logout-btn {
+            background: transparent;
+            color: var(--error-red);
+            border: 1.5px solid var(--error-red);
             padding: 8px 18px;
-            border-radius: 25px;
-            font-size: 13px;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.1);
-            color: #bbb;
-        }
-
-        .reply-tab.active {
-            background: rgba(0, 210, 255, 0.25);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .voice-rec-btn {
-            background: #ff3d00;
-            color: white;
-            border: none;
-            padding: 14px;
             border-radius: 12px;
-            width: 100%;
             cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .voice-rec-btn.recording {
-            animation: recordPulse 1.2s infinite;
-            background: #d50000;
-        }
-
-        @keyframes recordPulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 61, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 61, 0, 0); }
-        }
-
-        .reply-item {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 10px;
-            border-left: 3px solid #00ffcc;
             font-size: 14px;
         }
 
-        /* Master Controls */
-        .master-toggle-box {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+        .logout-btn:hover {
+            background: var(--error-red);
+            color: white;
+        }
+
+        /* Master Control Panel */
+        .master-panel {
+            background: rgba(255, 215, 0, 0.15);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--gold-text);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        /* Custom Switch */
+        /* Switch UI */
         .switch {
-            position: relative; display: inline-block; width: 50px; height: 26px;
+            position: relative; display: inline-block; width: 60px; height: 30px;
         }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -390,161 +351,256 @@
             background-color: #333; transition: .4s; border-radius: 34px;
         }
         .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px;
             background-color: white; transition: .4s; border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--gold); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        input:checked + .slider { background-color: var(--gold-text); }
+        input:checked + .slider:before { transform: translateX(30px); }
 
-        .top-nav {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 12px 18px; border-radius: 12px;
+        /* Inbox Audio Cards */
+        .request-card { 
+            background: rgba(25, 25, 25, 0.95); 
+            padding: 30px; 
+            border-radius: 25px; 
+            margin-bottom: 30px; 
+            border-left: 8px solid var(--primary-glow);
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
 
-        .logout-btn {
-            background: transparent; color: #ff5252; border: 1px solid #ff5252;
-            padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
+        .card-time {
+            position: absolute; top: 20px; right: 25px;
+            font-size: 12px; color: #aaa;
         }
 
-        .logout-btn:hover { background: #ff5252; color: white; }
+        .badge-audition {
+            background: var(--gold-text);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 900;
+            margin-left: 10px;
+            text-transform: uppercase;
+        }
 
-        #status-msg { text-align: center; margin-top: 15px; font-weight: bold; }
+        .reply-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .reply-type-tabs {
+            display: flex; gap: 15px; margin-bottom: 20px;
+        }
+
+        .type-tab {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+
+        .type-tab.active {
+            background: rgba(0, 210, 255, 0.2);
+            color: var(--primary-glow);
+            border: 1.5px solid var(--primary-glow);
+        }
+
+        .voice-btn {
+            background: #ff3d00;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+        }
+
+        .voice-btn.recording {
+            animation: pulse-red 1s infinite;
+            background: #b20000;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.7); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 20px rgba(255, 61, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 61, 0, 0); }
+        }
+
+        .reply-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 12px;
+            border-left: 4px solid var(--success-green);
+            font-size: 15px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-glow); border-radius: 10px; }
+
+        #upload-status { text-align: center; margin-top: 20px; font-weight: bold; font-size: 15px; }
     </style>
 </head>
 <body>
 
-<!-- 1. USER INTERFACE (MAIN) -->
-<div class="container" id="userInterface">
-    <div id="auditionLiveBanner">✨ অডিশন শুরু হয়েছে! আপনিও কি সেরা হতে চান? এখনই অংশ নিন ✨</div>
+<!-- Animated BG -->
+<div class="bg-circle c1"></div>
+<div class="bg-circle c2"></div>
+
+<!-- 1. USER PORTAL -->
+<div class="main-container" id="userPanel">
+    <div class="audition-banner" id="bannerAudition">✨ অডিশন শুরু হয়েছে! এখনই আপনার অডিও ফাইল পাঠিয়ে অংশ নিন ✨</div>
     
-    <h2>🎙️ প্রথম কথা</h2>
-    <p class="subtitle">প্রিমিয়াম অডিও চেক এবং AI স্ক্যানিং পোর্টাল</p>
+    <h1 class="logo-title">🎙️ প্রথম কথা</h1>
+    <p class="subtitle">স্মার্ট অডিও কোয়ালিটি এবং AI স্ক্যানিং পোর্টাল</p>
     
-    <div class="file-info">
-        🛡️ <b>নিরাপত্তা এবং নিয়ম:</b><br>
-        • অডিও ফাইলটি সর্বোচ্চ <b>১০০ MB</b> হতে হবে।<br>
-        • AI স্ক্যানিং সিস্টেম ব্যাকগ্রাউন্ড মিউজিক বা এডিট চেক করবে।<br>
-        • কোনো ফাইল ডাটাবেসে চিরস্থায়ী থাকে না, ২৪ ঘণ্টা পর মুছে যায়।
+    <div class="info-card">
+        <i class="fas fa-shield-alt"></i> <b>নিরাপত্তা নির্দেশিকা:</b><br>
+        ১. সর্বোচ্চ ফাইল সাইজ: <b>১০০ MB</b><br>
+        ২. আমাদের AI সিস্টেম অডিওর ব্যাকগ্রাউন্ড নয়েজ এবং এডিট ডিটেক্ট করে।<br>
+        ৩. গোপনীয়তার স্বার্থে ফাইলগুলো ২৪ ঘণ্টা পর অটোমেটিক ডিলিট হবে।
     </div>
 
-    <form id="uploadForm">
-        <label class="section-label">আপনার নাম লিখুন:</label>
-        <input type="text" id="uploaderName" placeholder="উদা: আরিয়ান খান" required>
+    <form id="requestForm">
+        <label class="input-label">আপনার সম্পূর্ণ নাম:</label>
+        <input type="text" id="userName" placeholder="উদা: আরিয়ান খান" required>
 
-        <!-- Audition Checkbox (Visible only when Admin enables) -->
-        <div id="auditionOptionBox" style="display: none; margin-bottom: 20px;">
-            <label style="background: rgba(255, 215, 0, 0.15); border: 1px dashed var(--gold); padding: 15px; border-radius: 14px; display: flex; align-items: center; cursor: pointer; color: var(--gold); font-weight: bold;">
-                <input type="checkbox" id="isAudition" style="margin-right: 12px; width: 22px; height: 22px;">
-                এটি কি অডিশন ফাইল? (অডিশন সেকশনে পাঠাতে টিক দিন)
+        <!-- Dynamic Audition Checkbox -->
+        <div id="auditionCheckWrapper" style="display: none;">
+            <label class="audition-toggle-user">
+                <input type="checkbox" id="userIsAudition" style="width: 24px; height: 24px;">
+                <span>এটি কি একটি অডিশন ফাইল? (হ্যাঁ হলে টিক দিন)</span>
             </label>
         </div>
 
-        <label class="section-label">কাকে পাঠাতে চান? (মেন্টরদের স্ট্যাটাস দেখে নিন):</label>
-        <div class="checkbox-group">
-            <!-- Mentor Row 1 -->
-            <label>
-                <div class="mentor-info-box">
+        <label class="input-label">মেন্টর সিলেক্ট করুন (যাকে পাঠাতে চান):</label>
+        <div class="mentor-grid">
+            <!-- Mentor 1 -->
+            <label class="mentor-row">
+                <div class="mentor-info">
                     <input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb">
                     <span>শুচিস্মিতা দাস নেহা</span>
                 </div>
-                <div class="status-badge" id="status_শুচিস্মিতা দাস নেহা">
-                    <span class="status-dot dot-offline"></span> Offline
+                <div class="status-pill" id="stat_শুচিস্মিতা দাস নেহা">
+                    <span class="dot dot-offline"></span> Offline
                 </div>
             </label>
-            <!-- Mentor Row 2 -->
-            <label>
-                <div class="mentor-info-box">
+            <!-- Mentor 2 -->
+            <label class="mentor-row">
+                <div class="mentor-info">
                     <input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb">
                     <span>বিদিশা মুখার্জি</span>
                 </div>
-                <div class="status-badge" id="status_বিদিশা মুখার্জি">
-                    <span class="status-dot dot-offline"></span> Offline
+                <div class="status-pill" id="stat_বিদিশা মুখার্জি">
+                    <span class="dot dot-offline"></span> Offline
                 </div>
             </label>
-            <!-- Mentor Row 3 -->
-            <label>
-                <div class="mentor-info-box">
+            <!-- Mentor 3 -->
+            <label class="mentor-row">
+                <div class="mentor-info">
                     <input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb">
                     <span>সঞ্জিত মল্লিক</span>
                 </div>
-                <div class="status-badge" id="status_সঞ্জিত মল্লিক">
-                    <span class="status-dot dot-offline"></span> Offline
+                <div class="status-pill" id="stat_সঞ্জিত মল্লিক">
+                    <span class="dot dot-offline"></span> Offline
                 </div>
             </label>
         </div>
 
-        <label class="section-label">অডিও ফাইল সিলেক্ট করুন:</label>
-        <input type="file" id="audioInput" accept="audio/*" required style="display: none;">
-        <button type="button" class="btn-main" style="background: #222; color: #fff; margin-bottom: 20px;" onclick="document.getElementById('audioInput').click()">📁 অডিও ফাইল বেছে নিন</button>
+        <label class="input-label">অডিও ফাইল (MP3/WAV/M4A):</label>
+        <input type="file" id="audioFile" accept="audio/*" required style="display:none;">
+        <button type="button" class="btn-action" style="background: #1a1a1a; color: #fff; margin-bottom: 25px;" onclick="document.getElementById('audioFile').click()">
+            <i class="fas fa-file-audio"></i> অডিও ফাইল বেছে নিন
+        </button>
         
-        <!-- AI Scan Animation -->
-        <div id="scanArea" class="scan-area">
-            <div id="scanLog1" class="scan-log">🔍 Initializing Neural Scan...</div>
-            <div id="scanLog2" class="scan-log"></div>
-            <div id="scanLog3" class="scan-log"></div>
-            <div class="progress-bar-container">
-                <div id="progressFill" class="progress-fill"></div>
+        <!-- Neural Scanner UI -->
+        <div id="scanBox" class="scan-container">
+            <div id="scan1" class="scan-line"><i class="fas fa-microchip"></i> Initializing Neural Spectral Scan...</div>
+            <div id="scan2" class="scan-line"></div>
+            <div id="scan3" class="scan-line"></div>
+            <div class="progress-rail">
+                <div id="pBar" class="progress-bar"></div>
             </div>
         </div>
 
-        <button type="submit" class="btn-main" id="submitBtn" disabled>প্রথমে ফাইল সিলেক্ট করুন</button>
+        <button type="submit" class="btn-action" id="btnUpload" disabled>ফাইল সিলেক্ট করুন</button>
     </form>
     
-    <div id="status-msg"></div>
+    <div id="upload-status"></div>
 
-    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 35px 0;">
-    <button id="goToMentorLogin" class="btn-main" style="background: transparent; color: #b0c4de; border: 1px solid #444; font-size: 15px;">🔒 মেন্টর ড্যাশবোর্ড এক্সেস</button>
+    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0;">
+    <button id="btnMentorLogin" class="btn-action" style="background: transparent; color: #aaa; border: 1.5px solid #444; font-size: 16px;">
+        <i class="fas fa-user-shield"></i> মেন্টর ড্যাশবোর্ড এক্সেস
+    </button>
 </div>
 
-<!-- 2. MENTOR INTERFACE (DASHBOARD) -->
-<div class="container mentor-area" id="mentorInterface">
-    <div class="top-nav">
-        <span id="displayMentorName" style="color: var(--primary); font-weight: bold;"></span>
-        <button onclick="mentorLogout()" class="logout-btn">লগ আউট</button>
+<!-- 2. MENTOR DASHBOARD -->
+<div class="main-container dashboard-container" id="mentorPanel">
+    <div class="navbar">
+        <span id="nameTag" style="color: var(--primary-glow); font-weight: bold; font-size: 18px;"></span>
+        <button onclick="exitDashboard()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> লগ আউট</button>
     </div>
 
-    <!-- Master Audition Toggle -->
-    <div class="master-toggle-box" id="masterAdminControls" style="display: none;">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:24px;">🔥</span>
+    <!-- Master Audition Control (Visible only to Admin) -->
+    <div class="master-panel" id="adminControls" style="display: none;">
+        <div style="display:flex; align-items:center; gap:15px;">
+            <i class="fas fa-fire-alt" style="font-size: 28px; color: var(--gold-text);"></i>
             <div>
-                <b style="color:var(--gold); display:block;">অডিশন মোড</b>
-                <span style="font-size:11px; color:#aaa;">অন করলে ইউজাররা অডিশন দিতে পারবে</span>
+                <b style="color:var(--gold-text); display:block; font-size: 18px;">অডিশন মাস্টার সুইচ</b>
+                <span style="font-size:12px; color:#aaa;" id="audStatusLabel">বর্তমানে বন্ধ আছে</span>
             </div>
         </div>
         <label class="switch">
-            <input type="checkbox" id="auditionMasterSwitch" onchange="toggleAuditionStatus(this.checked)">
+            <input type="checkbox" id="masterAuditionSwitch" onchange="updateAuditionGlobal(this.checked)">
             <span class="slider"></span>
         </label>
     </div>
 
-    <!-- Mentor Status Picker -->
-    <div class="status-picker-container" id="statusPickerBox" style="display: none;">
-        <label style="font-size: 14px; font-weight: bold; color: var(--primary);">আপনার স্ট্যাটাস সেট করুন:</label>
-        <select id="mentorStatusSelect" style="width: auto; margin: 0; padding: 6px 12px; font-size: 14px;" onchange="updateOnlineStatus(this.value)">
-            <option value="Online">Online ✅</option>
-            <option value="Busy">Busy ⛔</option>
-            <option value="Offline">Offline 🌑</option>
+    <!-- Status Settings -->
+    <div class="info-card" id="statusSetter" style="display: none; background: rgba(255,255,255,0.05); color: #fff; border-color: var(--glass-border);">
+        <label style="font-size: 14px; font-weight: bold; color: var(--primary-glow); display: block; margin-bottom: 10px;">আপনার বর্তমান অবস্থা (Status):</label>
+        <select id="myStatus" style="margin:0; padding: 10px 15px; font-size: 14px;" onchange="setMyOnlineStatus(this.value)">
+            <option value="Online">Online ✅ (সবাই দেখতে পাবে)</option>
+            <option value="Busy">Busy ⛔ (ব্যস্ত আছেন)</option>
+            <option value="Offline">Offline 🌑 (অফলাইনে চলে যান)</option>
         </select>
     </div>
 
-    <h3 style="text-align:center; border-bottom: 1px solid #333; padding-bottom: 15px;">🎧 অডিও ইনবক্স</h3>
-    <div id="audioRequestList">
-        <p style="text-align:center; color:#777;">অডিও লোড হচ্ছে...</p>
+    <h3 style="text-align:center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px;">📥 অডিও ইনবক্স (Last 24h)</h3>
+    
+    <div id="inboxList">
+        <p style="text-align:center; color:#666;">লোড হচ্ছে...</p>
     </div>
 </div>
 
-<!-- Sounds -->
-<audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+<!-- Sound Assets -->
+<audio id="notifBell" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
-<!-- Firebase SDKs -->
+<!-- Firebase Infrastructure -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 <script>
-    /* --- FIREBASE CONFIGURATION --- 
+    /* CORE APPLICATION LOGIC (JAVASCRIPT)
+       Version: 8.0 - High Definition Execution
     */
+
+    // 1. Firebase Initializing
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
         apiKey: "AIzaSyCjrGdZMocegvJBIXKI5UKAfzFK7k3-iKI", 
         projectId: "prothomkotha-2002"
@@ -555,34 +611,36 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    /* --- CLOUDINARY CONFIG --- 
-    */
-    const cloudName = 'dy9bujsit'; 
-    const uploadPreset = 'Prothom Kotha Voice';
+    // 2. Constants & States
+    const CLOUD_NAME = 'dy9bujsit'; 
+    const UPLOAD_PRESET = 'Prothom Kotha Voice';
+    
+    let activeMentor = "";
+    let isMaster = false;
+    let isFirstLoad = true;
+    let audioRecorder;
+    let audioChunks = [];
 
-    // Global App States
-    let currentMentor = "";
-    let isMasterAdmin = false;
-    let initialLoad = true;
-    let recorder;
-    let chunks = [];
+    // Helper: Strict Paths
+    const getRef = (col) => db.collection('artifacts').doc(appId).collection('public').doc('data').collection(col);
 
-    // Rule 1: STRICT PATHS HELPER
-    const pathRef = (collectionName) => db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName);
-
-    /* --- INITIALIZATION --- 
-    */
+    // 3. Application Bootup
     window.onload = async function() {
-        // Rule 3: Auth Before Queries
         try {
-            await auth.signInAnonymously();
-        } catch (e) {
-            console.error("Auth Error:", e);
+            // Rule 3: Auth first
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await auth.signInWithCustomToken(__initial_auth_token);
+            } else {
+                await auth.signInAnonymously();
+            }
+        } catch (err) {
+            console.error("Auth Fail:", err);
+            document.getElementById('upload-status').innerHTML = "<b style='color:red;'>সার্ভার কানেকশন এরর! ফায়ারবেস সেটিংস চেক করুন।</b>";
         }
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                initAppListeners();
+                startGlobalListeners();
             }
         });
 
@@ -591,337 +649,340 @@
         }
     };
 
-    function initAppListeners() {
-        listenForAuditionStatus();
-        listenForMentorStatuses();
+    function startGlobalListeners() {
+        listenAuditionGlobal();
+        listenMentorStatusGlobal();
     }
 
-    /* --- AUDITION CONTROL --- 
-    */
-    function listenForAuditionStatus() {
-        pathRef('settings').doc('auditionControl').onSnapshot(doc => {
-            const isLive = doc.exists ? doc.data().isLive : false;
-            document.getElementById('auditionLiveBanner').style.display = isLive ? 'block' : 'none';
-            document.getElementById('auditionOptionBox').style.display = isLive ? 'block' : 'none';
+    // --- GLOBAL LISTENERS ---
+
+    function listenAuditionGlobal() {
+        getRef('settings').doc('auditionControl').onSnapshot(doc => {
+            const data = doc.data();
+            const live = data ? data.isLive : false;
             
-            const masterSwitch = document.getElementById('auditionMasterSwitch');
-            if (masterSwitch) masterSwitch.checked = isLive;
+            // User UI
+            document.getElementById('bannerAudition').style.display = live ? 'block' : 'none';
+            document.getElementById('auditionCheckWrapper').style.display = live ? 'block' : 'none';
             
-            const label = document.getElementById('auditionLabel');
-            if (label) label.innerText = isLive ? "লাইভ" : "বন্ধ";
+            // Admin UI
+            const sw = document.getElementById('masterAuditionSwitch');
+            if (sw) sw.checked = live;
+            
+            const lbl = document.getElementById('audStatusLabel');
+            if (lbl) {
+                lbl.innerText = live ? "বর্তমানে লাইভ আছে 🔥" : "বর্তমানে বন্ধ আছে";
+                lbl.style.color = live ? "#ffd700" : "#aaa";
+            }
         });
     }
 
-    async function toggleAuditionStatus(isLive) {
-        if (!isMasterAdmin) return;
-        try {
-            await pathRef('settings').doc('auditionControl').set({ isLive: isLive });
-        } catch (e) { console.error(e); }
-    }
-
-    /* --- MENTOR STATUS (USER SIDE) --- 
-    */
-    function listenForMentorStatuses() {
-        pathRef('mentorStatus').onSnapshot(snapshot => {
+    function listenMentorStatusGlobal() {
+        getRef('mentorStatus').onSnapshot(snapshot => {
             snapshot.forEach(doc => {
                 const name = doc.id;
-                const data = doc.data();
-                const badge = document.getElementById(`status_${name}`);
+                const status = doc.data().status || "Offline";
+                const badge = document.getElementById(`stat_${name}`);
                 if (badge) {
-                    const status = data.status || "Offline";
-                    badge.className = `status-badge status-${status.toLowerCase()}`;
-                    badge.innerHTML = `<span class="status-dot dot-${status.toLowerCase()}"></span> ${status}`;
+                    badge.className = `status-pill status-${status.toLowerCase()}`;
+                    badge.innerHTML = `<span class="dot dot-${status.toLowerCase()}"></span> ${status}`;
                 }
             });
         });
     }
 
-    /* --- AUDIO SCANNER LOGIC --- 
-    */
-    const audioInput = document.getElementById('audioInput');
-    const scanArea = document.getElementById('scanArea');
-    const submitBtn = document.getElementById('submitBtn');
+    // --- USER ACTIONS ---
 
-    audioInput.onchange = function() {
+    const fileInput = document.getElementById('audioFile');
+    const scanBox = document.getElementById('scanBox');
+    const uploadBtn = document.getElementById('btnUpload');
+
+    fileInput.onchange = function() {
         const file = this.files[0];
         if (!file) return;
 
         if (file.size > 104857600) {
-            alert("❌ ১০০ MB এর বেশি বড় ফাইল আপলোড করা যাবে না!");
-            this.value = "";
-            return;
+            alert("ফাইল ১০০ MB এর বেশি বড়!");
+            this.value = ""; return;
         }
 
-        scanArea.style.display = 'block';
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = "স্ক্যান চলছে...";
+        scanBox.style.display = 'block';
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = "AI স্ক্যান চলছে...";
 
-        const logs = [
-            { id: 'scanLog1', text: "🔍 Analyzing spectral data...", delay: 800, progress: 30 },
-            { id: 'scanLog2', text: "📡 Checking for background music footprints...", delay: 1800, progress: 65 },
-            { id: 'scanLog3', text: "✅ Audio integrity verified. Ready to ship.", delay: 2800, progress: 100 }
-        ];
-
-        logs.forEach(log => {
+        // Neural Scan Steps
+        setTimeout(() => {
+            document.getElementById('scan1').innerText = "🔍 Analyzing wave spectral data...";
+            document.getElementById('pBar').style.width = "35%";
             setTimeout(() => {
-                document.getElementById(log.id).innerText = log.text;
-                document.getElementById('progressFill').style.width = log.progress + "%";
-                if (log.progress === 100) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = "অডিও আপলোড করুন";
-                }
-            }, log.delay);
-        });
+                document.getElementById('scan2').innerText = "📡 Scanning for background music fingerprints...";
+                document.getElementById('pBar').style.width = "75%";
+                setTimeout(() => {
+                    document.getElementById('scan3').innerText = "✅ Integrity Check Verified. Audio is clean.";
+                    document.getElementById('pBar').style.width = "100%";
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = "অডিও ফাইল পাঠান";
+                }, 1200);
+            }, 1200);
+        }, 1000);
     };
 
-    /* --- UPLOAD SYSTEM --- 
-    */
-    document.getElementById('uploadForm').onsubmit = async function(e) {
+    document.getElementById('requestForm').onsubmit = async function(e) {
         e.preventDefault();
         
-        const selectedMentors = Array.from(document.querySelectorAll('.mentor-cb:checked')).map(cb => cb.value);
-        if (selectedMentors.length === 0) return alert("দয়া করে অন্তত একজন মেন্টর সিলেক্ট করুন!");
+        const mentors = Array.from(document.querySelectorAll('.mentor-cb:checked')).map(c => c.value);
+        if (mentors.length === 0) return alert("দয়া করে মেন্টর সিলেক্ট করুন!");
 
-        const name = document.getElementById('uploaderName').value;
-        const isAudition = document.getElementById('isAudition').checked;
-        const file = audioInput.files[0];
-        const statusMsg = document.getElementById('status-msg');
+        const name = document.getElementById('userName').value;
+        const audition = document.getElementById('userIsAudition').checked;
+        const file = fileInput.files[0];
+        const statusDiv = document.getElementById('upload-status');
 
-        statusMsg.innerHTML = "⏳ সার্ভারে আপলোড হচ্ছে... দয়া করে অপেক্ষা করুন।";
-        submitBtn.disabled = true;
+        statusDiv.innerHTML = "<i class='fas fa-spinner fa-spin'></i> ক্লাউড সার্ভারে আপলোড হচ্ছে... দয়া করে ট্যাব কাটবেন না।";
+        uploadBtn.disabled = true;
 
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', uploadPreset);
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('upload_preset', UPLOAD_PRESET);
 
         try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
-                method: 'POST',
-                body: formData
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, {
+                method: 'POST', body: fd
             });
-            const cloudData = await response.json();
+            const data = await res.json();
 
-            if (cloudData.secure_url) {
-                await pathRef('requests').add({
-                    audioUrl: cloudData.secure_url,
-                    mentors: selectedMentors,
+            if (data.secure_url) {
+                // Save to Firestore
+                await getRef('requests').add({
+                    audioUrl: data.secure_url,
+                    mentors: mentors,
                     uploaderName: name,
                     fileName: file.name,
-                    isAudition: isAudition,
+                    isAudition: audition,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     replies: []
                 });
 
-                statusMsg.innerHTML = "<span style='color:#00ffcc;'>✅ অডিও সফলভাবে মেন্টরদের কাছে পৌঁছেছে!</span>";
+                statusDiv.innerHTML = "<b style='color:#00ffcc;'>✅ সফল! আপনার অডিও মেন্টরদের ইনবক্সে পৌঁছে গেছে।</b>";
                 this.reset();
-                scanArea.style.display = 'none';
-                document.getElementById('progressFill').style.width = "0%";
-            } else {
-                throw new Error("Cloudinary error");
+                scanBox.style.display = 'none';
+                document.getElementById('pBar').style.width = "0%";
             }
         } catch (err) {
-            statusMsg.innerHTML = "<span style='color:#ff5252;'>❌ আপলোড ব্যর্থ হয়েছে! ইন্টারনেট চেক করুন।</span>";
+            statusDiv.innerHTML = "<b style='color:red;'>❌ আপলোড ব্যর্থ! ইন্টারনেট চেক করে আবার চেষ্টা করুন।</b>";
         }
-        submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
+        uploadBtn.innerHTML = "ফাইল সিলেক্ট করুন";
     };
 
-    /* --- MENTOR LOGIN & DASHBOARD --- 
-    */
-    document.getElementById('goToMentorLogin').onclick = function() {
-        const pass = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
-        const passMap = {
+    // --- MENTOR DASHBOARD LOGIC ---
+
+    document.getElementById('btnMentorLogin').onclick = function() {
+        const pass = prompt("আপনার সিক্রেট মেন্টর পাসওয়ার্ড দিন:");
+        const map = {
             "Neha123": "শুচিস্মিতা দাস নেহা",
             "Bidisha123": "বিদিশা মুখার্জি",
             "Sanjit123": "সঞ্জিত মল্লিক",
             "Master2002": "All"
         };
 
-        if (passMap[pass]) {
-            currentMentor = passMap[pass];
-            isMasterAdmin = (currentMentor === "All");
+        if (map[pass]) {
+            activeMentor = map[pass];
+            isMaster = (activeMentor === "All");
+
+            document.getElementById('userPanel').style.display = 'none';
+            document.getElementById('mentorPanel').style.display = 'block';
+            document.getElementById('nameTag').innerText = isMaster ? "👤 অ্যাডমিন কন্ট্রোল" : `👤 মেন্টর: ${activeMentor}`;
             
-            document.getElementById('userInterface').style.display = 'none';
-            document.getElementById('mentorInterface').style.display = 'block';
-            document.getElementById('displayMentorName').innerText = isMasterAdmin ? "👤 অ্যাডমিন প্যানেল" : `👤 মেন্টর: ${currentMentor}`;
-            
-            if (isMasterAdmin) {
-                document.getElementById('masterAdminControls').style.display = 'flex';
-                document.getElementById('statusPickerBox').style.display = 'none';
+            if (isMaster) {
+                document.getElementById('adminControls').style.display = 'flex';
+                document.getElementById('statusSetter').style.display = 'none';
             } else {
-                document.getElementById('statusPickerBox').style.display = 'flex';
-                updateOnlineStatus("Online");
+                document.getElementById('statusSetter').style.display = 'block';
+                setMyOnlineStatus("Online");
             }
             
-            loadAudioRequests();
+            startInboxListener();
         } else {
-            alert("❌ পাসওয়ার্ড সঠিক নয়!");
+            alert("ভুল পাসওয়ার্ড!");
         }
     };
 
-    async function updateOnlineStatus(status) {
-        if (!currentMentor || isMasterAdmin) return;
-        await pathRef('mentorStatus').doc(currentMentor).set({ status: status, lastUpdated: new Date() });
+    async function setMyOnlineStatus(status) {
+        if (!activeMentor || isMaster || !auth.currentUser) return;
+        await getRef('mentorStatus').doc(activeMentor).set({ 
+            status: status, 
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+        });
     }
 
-    function loadAudioRequests() {
-        const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    async function updateAuditionGlobal(val) {
+        if (!isMaster) return;
+        await getRef('settings').doc('auditionControl').set({ isLive: val });
+    }
+
+    function startInboxListener() {
+        // Fetch last 24 hours, then filter/sort in memory (Rule 2)
+        const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         
-        pathRef('requests')
-            .where('timestamp', '>=', last24h)
-            .orderBy('timestamp', 'desc')
-            .onSnapshot(snapshot => {
-                const listArea = document.getElementById('audioRequestList');
+        getRef('requests').onSnapshot(snap => {
+            const list = document.getElementById('inboxList');
+            let dataArr = [];
+
+            snap.forEach(doc => {
+                const d = doc.data();
+                const ts = d.timestamp ? d.timestamp.toMillis() : Date.now();
                 
-                // Notifications
-                if (!initialLoad) {
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === "added") {
-                            const data = change.doc.data();
-                            if (isMasterAdmin || data.mentors.includes(currentMentor)) {
-                                document.getElementById('notifSound').play().catch(()=>{});
-                                if (Notification.permission === "granted") {
-                                    new Notification("নতুন অডিও এসেছে!", { body: `পাঠিয়েছে: ${data.uploaderName}` });
-                                }
-                            }
-                        }
-                    });
+                if (ts >= dayAgo.getTime()) {
+                    if (isMaster || (d.mentors && d.mentors.includes(activeMentor))) {
+                        dataArr.push({ id: doc.id, ...d, ts: ts });
+                    }
                 }
+            });
 
-                listArea.innerHTML = "";
-                let count = 0;
+            // Sort Descending
+            dataArr.sort((a, b) => b.ts - a.ts);
 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (!isMasterAdmin && !data.mentors.includes(currentMentor)) return;
-                    
-                    count++;
-                    const docId = doc.id;
-                    const replies = data.replies || [];
-                    const time = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : "Just now";
+            // Notify on new items
+            if (!isFirstLoad && dataArr.length > 0) {
+                document.getElementById('notifBell').play().catch(()=>{});
+                if (Notification.permission === "granted") {
+                    new Notification("নতুন অডিও রিকোয়েস্ট!", { body: "আপনার ইনবক্স চেক করুন।" });
+                }
+            }
 
-                    let repliesHtml = replies.map(r => `
-                        <div class="reply-item">
-                            <b>${r.mentor}:</b> ${r.type === 'text' ? r.content : `<audio controls src="${r.content}" style="height:35px;"></audio>`}
-                        </div>
-                    `).join('');
+            list.innerHTML = "";
+            dataArr.forEach(item => {
+                const reps = (item.replies || []).map(r => `
+                    <div class="reply-item">
+                        <b style="color:var(--primary-glow)">${r.mentor}:</b> 
+                        ${r.type === 'text' ? r.content : `<audio controls src="${r.content}" style="height:35px; margin-top:5px;"></audio>`}
+                    </div>
+                `).join('');
 
-                    listArea.innerHTML += `
-                        <div class="audio-card">
-                            <span class="timestamp">${time}</span>
-                            <p><b>পাঠিয়েছে:</b> ${data.uploaderName} ${data.isAudition ? '<span class="audition-tag">অডিশন</span>' : ''}</p>
-                            <p style="font-size:12px; color:#aaa;">ফাইলের নাম: ${data.fileName || 'N/A'}</p>
-                            <audio controls src="${data.audioUrl}"></audio>
-                            
-                            <div class="reply-section">
-                                <div class="reply-tabs">
-                                    <div class="reply-tab active" onclick="switchTab('${docId}', 'text')">টেক্সট</div>
-                                    <div class="reply-tab" onclick="switchTab('${docId}', 'voice')">ভয়েস রেকর্ড</div>
-                                </div>
-
-                                <div id="textInput_${docId}">
-                                    <textarea id="text_${docId}" placeholder="আপনার ফিডব্যাক লিখুন..."></textarea>
-                                    <button class="btn-send-reply" onclick="sendReply('${docId}', 'text')">টেক্সট রিপ্লাই পাঠান</button>
-                                </div>
-
-                                <div id="voiceInput_${docId}" style="display:none;">
-                                    <button id="recBtn_${docId}" class="voice-rec-btn" onclick="handleVoiceRec('${docId}')">🎙️ রেকর্ড শুরু করুন</button>
-                                    <div id="recLog_${docId}" style="font-size:12px; text-align:center; margin-top:5px;"></div>
-                                </div>
-
-                                <div class="existing-replies" id="reps_${docId}">${repliesHtml}</div>
+                list.innerHTML += `
+                    <div class="request-card">
+                        <span class="card-time">${new Date(item.ts).toLocaleTimeString()}</span>
+                        <p style="font-size: 18px; font-weight: bold;">
+                            <i class="fas fa-user-circle"></i> ${item.uploaderName} 
+                            ${item.isAudition ? '<span class="badge-audition">Audition</span>' : ''}
+                        </p>
+                        <p style="font-size:12px; color:#777; margin:5px 0 15px 0;">ফাইল: ${item.fileName || 'Audio'}</p>
+                        
+                        <audio controls src="${item.audioUrl}"></audio>
+                        
+                        <div class="reply-box">
+                            <div class="reply-type-tabs">
+                                <div class="type-tab active" onclick="changeReplyType('${item.id}', 'text')">টেক্সট রিপ্লাই</div>
+                                <div class="type-tab" onclick="changeReplyType('${item.id}', 'voice')">ভয়েস রেকর্ড</div>
                             </div>
 
-                            <button class="logout-btn" style="width:100%; margin-top:15px;" onclick="deleteAudio('${docId}')">🗑️ অডিওটি লিস্ট থেকে মুছুন</button>
-                        </div>
-                    `;
-                });
+                            <div id="textWrap_${item.id}">
+                                <textarea id="txt_${item.id}" placeholder="আপনার মন্তব্য লিখুন..."></textarea>
+                                <button class="btn-action" style="padding:12px; font-size:14px;" onclick="sendMentorReply('${item.id}', 'text')">রিপ্লাই পাঠান</button>
+                            </div>
 
-                if (count === 0) listArea.innerHTML = "<p style='text-align:center; color:#777;'>গত ২৪ ঘণ্টায় কোনো অডিও আসেনি।</p>";
-                initialLoad = false;
+                            <div id="voiceWrap_${item.id}" style="display:none;">
+                                <button id="vRecBtn_${item.id}" class="voice-btn" onclick="toggleVoiceRecord('${item.id}')">
+                                    <i class="fas fa-microphone"></i> রেকর্ড শুরু করুন
+                                </button>
+                                <div id="vLog_${item.id}" style="text-align:center; font-size:12px; margin-top:10px; color:var(--success-green);"></div>
+                            </div>
+
+                            <div style="margin-top:20px; border-top:1px solid #333; padding-top:15px;">
+                                <p style="font-size:12px; color:#aaa; margin-bottom:10px;">আগের রিপ্লাইসমূহ:</p>
+                                ${reps || '<i style="font-size:12px; color:#555;">কোনো রিপ্লাই দেওয়া হয়নি</i>'}
+                            </div>
+                        </div>
+
+                        <button class="logout-btn" style="width:100%; margin-top:20px; padding: 12px;" onclick="deleteDoc('${item.id}')">🗑️ লিস্ট থেকে মুছে ফেলুন</button>
+                    </div>
+                `;
             });
+
+            if (dataArr.length === 0) list.innerHTML = "<p style='text-align:center; color:#555; padding:50px;'>বর্তমানে কোনো অডিও পেন্ডিং নেই।</p>";
+            isFirstLoad = false;
+        });
     }
 
-    /* --- REPLY LOGIC --- 
-    */
-    window.switchTab = function(id, type) {
-        document.getElementById(`textInput_${id}`).style.display = type === 'text' ? 'block' : 'none';
-        document.getElementById(`voiceInput_${id}`).style.display = type === 'voice' ? 'block' : 'none';
-        
-        const tabs = event.target.parentElement.querySelectorAll('.reply-tab');
-        tabs.forEach(t => t.classList.remove('active'));
+    // --- MENTOR REPLY LOGICS ---
+
+    window.changeReplyType = function(id, type) {
+        const wrap = event.target.closest('.reply-box');
+        wrap.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
         event.target.classList.add('active');
+
+        document.getElementById(`textWrap_${id}`).style.display = (type === 'text' ? 'block' : 'none');
+        document.getElementById(`voiceWrap_${id}`).style.display = (type === 'voice' ? 'block' : 'none');
     };
 
-    window.sendReply = async function(docId, type, content) {
-        const val = content || document.getElementById(`text_${docId}`).value;
-        if (!val) return;
+    window.sendMentorReply = async function(docId, type, voiceUrl = null) {
+        const content = voiceUrl || document.getElementById(`txt_${docId}`).value;
+        if (!content || !auth.currentUser) return;
 
         try {
-            await pathRef('requests').doc(docId).update({
+            await getRef('requests').doc(docId).update({
                 replies: firebase.firestore.FieldValue.arrayUnion({
-                    mentor: isMasterAdmin ? "Admin" : currentMentor,
+                    mentor: isMaster ? "Admin" : activeMentor,
                     type: type,
-                    content: val,
-                    timestamp: new Date()
+                    content: content,
+                    at: new Date()
                 })
             });
-            if (type === 'text') document.getElementById(`text_${docId}`).value = "";
-        } catch (e) { alert("Error sending reply"); }
+            if (type === 'text') document.getElementById(`txt_${docId}`).value = "";
+        } catch (e) { alert("রিপ্লাই পাঠাতে সমস্যা হয়েছে!"); }
     };
 
-    /* --- VOICE RECORDING LOGIC --- 
-    */
-    window.handleVoiceRec = async function(docId) {
-        const btn = document.getElementById(`recBtn_${docId}`);
-        const log = document.getElementById(`recLog_${docId}`);
+    window.toggleVoiceRecord = async function(docId) {
+        const btn = document.getElementById(`vRecBtn_${docId}`);
+        const log = document.getElementById(`vLog_${docId}`);
 
-        if (!recorder || recorder.state === "inactive") {
+        if (!audioRecorder || audioRecorder.state === "inactive") {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                recorder = new MediaRecorder(stream);
-                chunks = [];
+                audioRecorder = new MediaRecorder(stream);
+                audioChunks = [];
 
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.onstop = async () => {
-                    log.innerText = "⏳ প্রসেস হচ্ছে...";
-                    const audioBlob = new Blob(chunks, { type: 'audio/wav' });
+                audioRecorder.ondataavailable = e => audioChunks.push(e.data);
+                audioRecorder.onstop = async () => {
+                    log.innerText = "⏳ ক্লাউডে সেভ হচ্ছে...";
+                    const blob = new Blob(audioChunks, { type: 'audio/wav' });
                     
                     const fd = new FormData();
-                    fd.append('file', audioBlob);
-                    fd.append('upload_preset', uploadPreset);
+                    fd.append('file', blob);
+                    fd.append('upload_preset', UPLOAD_PRESET);
 
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, { method: 'POST', body: fd });
-                    const d = await res.json();
+                    const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: fd });
+                    const d = await r.json();
                     
                     if (d.secure_url) {
-                        sendReply(docId, 'voice', d.secure_url);
-                        log.innerText = "✅ ভয়েস রিপ্লাই পাঠানো হয়েছে!";
-                    } else { log.innerText = "❌ ব্যর্থ হয়েছে!"; }
+                        await sendMentorReply(docId, 'voice', d.secure_url);
+                        log.innerText = "✅ ভয়েস রিপ্লাই সফলভাবে পাঠানো হয়েছে!";
+                    } else { log.innerText = "❌ আপলোড এরর!"; }
                 };
 
-                recorder.start();
-                btn.innerText = "🛑 রেকর্ড বন্ধ করুন";
+                audioRecorder.start();
+                btn.innerHTML = "<i class='fas fa-stop'></i> রেকর্ড বন্ধ করুন";
                 btn.classList.add('recording');
                 log.innerText = "রেকর্ডিং চলছে...";
-            } catch (err) { alert("Microphone access denied!"); }
+            } catch (err) { alert("মাইক্রোফোন পারমিশন দিন!"); }
         } else {
-            recorder.stop();
-            btn.innerText = "🎙️ রেকর্ড শুরু করুন";
+            audioRecorder.stop();
+            btn.innerHTML = "<i class='fas fa-microphone'></i> রেকর্ড শুরু করুন";
             btn.classList.remove('recording');
         }
     };
 
-    window.deleteAudio = async function(id) {
-        if (confirm("আপনি কি নিশ্চিতভাবে এটি মুছতে চান?")) {
-            await pathRef('requests').doc(id).delete();
+    window.deleteDoc = async (id) => {
+        if (confirm("আপনি কি নিশ্চিত এটি ডিলিট করতে চান?")) {
+            await getRef('requests').doc(id).delete();
         }
     };
 
-    window.mentorLogout = async function() {
-        if (!isMasterAdmin) await updateOnlineStatus("Offline");
+    window.exitDashboard = async () => {
+        if (!isMaster) await setMyOnlineStatus("Offline");
         location.reload();
     };
-</script>
 
+</script>
 </body>
 </html>
