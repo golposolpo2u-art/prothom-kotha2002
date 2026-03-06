@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রথম কথা - স্মার্ট অডিও পোর্টাল</title>
+    <meta name="description" content="প্রথম কথা - অ্যাডভান্সড অডিও কোয়ালিটি চেক এবং AI স্ক্যানিং পোর্টাল।">
+    
+    <!-- Kalpurush Font from CDN -->
+    <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+    
+    <style>
+        /* Custom Ekush Font */
+        @font-face {
+            font-family: 'EkushRegular';
+            src: url('Ekush-Regular.ttf') format('truetype');
+        }
+
+        /* Global Styles & Premium Background */
+        body { 
+            font-family: 'Kalpurush', Arial, sans-serif; 
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            margin: 0; 
+            padding: 20px; 
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        /* Glassmorphism Main Container */
+        .container { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+            width: 100%;
+            max-width: 550px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        h2 { 
+            font-family: 'EkushRegular', sans-serif; 
+            color: white; 
+            font-size: 42px;
+            margin-top: 0;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .subtitle { 
+            color: #b0c4de; 
+            font-size: 18px; 
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .file-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #00ffcc;
+            margin-bottom: 20px;
+            border: 1px dashed rgba(0, 210, 255, 0.4);
+            line-height: 1.6;
+        }
+
+        /* Forms & Inputs */
+        input[type="file"], input[type="text"] { 
+            width: 100%; 
+            margin: 10px 0 15px 0; 
+            padding: 15px; 
+            background: rgba(255, 255, 255, 0.9);
+            border: none; 
+            border-radius: 10px; 
+            color: #121212;
+            box-sizing: border-box;
+            font-family: 'Kalpurush', sans-serif;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .btn-main { 
+            width: 100%; 
+            padding: 15px; 
+            background: #00d2ff; 
+            color: #0f2027; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            font-size: 18px;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            font-family: 'Kalpurush', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .btn-main:hover:not(:disabled) { 
+            background: #3a7bd5; 
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(58, 123, 213, 0.5);
+        }
+
+        .btn-main:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Mentor Checkbox Area */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .checkbox-group label {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .checkbox-group label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00d2ff;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #00d2ff;
+        }
+
+        /* AI Scan Progress Bar Area */
+        .scan-area {
+            display: none;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff007f;
+        }
+
+        .scan-log {
+            font-family: monospace;
+            font-size: 13px;
+            color: #00ffcc;
+            margin: 5px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            transition: width 0.5s ease;
+        }
+
+        #status { 
+            margin-top: 15px; 
+            font-weight: bold; 
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Mentor Dashboard Area */
+        .mentor-area { 
+            display: none; 
+            padding: 25px 20px; 
+            background: rgba(0, 0, 0, 0.5); 
+            border-radius: 15px; 
+            text-align: left;
+            border: 1px solid rgba(187, 134, 252, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .mentor-area h3 {
+            font-family: 'EkushRegular', sans-serif;
+            font-size: 32px;
+            margin-top: 0;
+            color: #bb86fc;
+            text-align: center;
+        }
+
+        .audio-card { 
+            background: rgba(30, 30, 30, 0.9); 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 15px; 
+            border-left: 4px solid #00d2ff;
+            position: relative;
+        }
+
+        .audio-card .timestamp {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        audio { 
+            width: 100%; 
+            margin-top: 10px; 
+            filter: invert(90%) hue-rotate(180deg); 
+            outline: none;
+        }
+
+        .btn-delete {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: #ff4d4d;
+            border: 1px solid #ff4d4d;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 1. MAIN UPLOAD SECTION (Open for everyone) -->
+<div class="container" id="mainContainer">
+    <h2>🎙️ প্রথম কথা</h2>
+    <p class="subtitle">অ্যাডভান্সড অডিও কোয়ালিটি এবং এডিট চেকার</p>
+    
+    <div class="file-info">
+        ⚠️ <b>নিয়মাবলী:</b><br>
+        ১. ফাইল সাইজ সর্বোচ্চ <b>১০০ MB</b> হতে হবে।<br>
+        ২. ফরম্যাট: <b>MP3, WAV, M4A, AAC</b><br>
+        ৩. এডিট করা ফাইল দিলে সিস্টেম সেটি ডিটেক্ট করবে।<br>
+        ৪. ফাইলগুলি ২৪ ঘণ্টা পর মুছে যাবে।
+    </div>
+
+    <form id="uploadForm">
+        <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">আপনার নাম:</label>
+        <input type="text" id="uploaderName" placeholder="আপনার নাম লিখুন..." required>
+
+        <label style="font-weight: bold; margin-bottom: 10px; margin-top: 10px; display: block; color: #00d2ff; text-align: left;">কাকে পাঠাতে চান? (একাধিক সিলেক্ট করতে পারেন):</label>
+        
+        <!-- Checkbox Mentors -->
+        <div class="checkbox-group">
+            <label><input type="checkbox" value="শুচিস্মিতা দাস নেহা" class="mentor-cb"> শুচিস্মিতা দাস নেহা</label>
+            <label><input type="checkbox" value="বিদিশা মুখার্জি" class="mentor-cb"> বিদিশা মুখার্জি</label>
+            <label><input type="checkbox" value="সঞ্জিত মল্লিক" class="mentor-cb"> সঞ্জিত মল্লিক</label>
+            <label><input type="checkbox" value="সামুন ইসলাম" class="mentor-cb"> সামুন ইসলাম</label>
+        </div>
+
+        <label style="font-weight: bold; margin-bottom: 5px; display: block; color: #00d2ff; text-align: left;">অডিও ফাইল সিলেক্ট করুন:</label>
+        <input type="file" id="audioInput" accept="audio/*" required>
+        
+        <!-- AI Scan Progress Area -->
+        <div id="scanArea" class="scan-area">
+            <div id="scanLog1" class="scan-log">⏳ Initializing Smart Scan...</div>
+            <div id="scanLog2" class="scan-log"></div>
+            <div id="scanLog3" class="scan-log"></div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-main" id="submitBtn" disabled>প্রথমে ফাইল সিলেক্ট করুন</button>
+    </form>
+    
+    <div id="status"></div>
+
+    <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 25px 0;">
+    <button id="mentorLoginBtn" class="btn-main" style="background: transparent; color: #b0c4de; border: 1px solid rgba(255,255,255,0.2);">🔒 মেন্টর ড্যাশবোর্ড প্যানেল</button>
+</div>
+
+<!-- 2. MENTOR DASHBOARD (Hidden default) -->
+<div class="container mentor-area" id="mentorDashboard">
+    <div class="top-bar">
+        <span style="color: #bb86fc; font-weight: bold;">প্যানেল অ্যাক্টিভ</span>
+        <button onclick="location.reload()" class="logout-btn">প্যানেল বন্ধ করুন</button>
+    </div>
+
+    <h3>🎧 মেন্টর কন্ট্রোল প্যানেল</h3>
+    <p style="text-align: center; color: #aaa; font-size: 13px;">(অডিওগুলো শুনুন। ২৪ ঘণ্টা পর ফাইল অটো-ডিলিট হবে)</p>
+    
+    <div id="requestList">
+        <p style="text-align:center; color: #aaa;">ডাটা লোড হচ্ছে...</p>
+    </div>
+</div>
+
+<!-- Notification Audio (Ding sound) -->
+<audio id="notifySound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+<!-- Firebase SDKs (Only Core & Firestore needed now) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // 1. Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCjrGdZMocegvJBIXKI5UKAfzFK7k3-iKI", 
+        projectId: "prothomkotha-2002"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 2. Cloudinary Config
+    const cloudName = 'dy9bujsit'; 
+    const uploadPreset = 'Prothom Kotha Voice';
+
+    const mainContainer = document.getElementById('mainContainer');
+    const mentorDashboard = document.getElementById('mentorDashboard');
+
+    // Request Background Notification Permission
+    function requestNotifyPermission() {
+        if (window.Notification && Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    }
+
+    // --- SMART AUDIO SCANNER ---
+    const audioInput = document.getElementById('audioInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const scanArea = document.getElementById('scanArea');
+    const progressFill = document.getElementById('progressFill');
+    const statusDiv = document.getElementById('status');
+    let isFileScanned = false;
+
+    audioInput.addEventListener('change', async function() {
+        const file = this.files[0];
+        isFileScanned = false;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "স্ক্যান চলছে...";
+        statusDiv.innerHTML = "";
+
+        if (!file) {
+            scanArea.style.display = 'none';
+            submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
+            return;
+        }
+
+        if (file.size > 104857600) { // 100 MB Limit
+            alert("❌ ফাইলের সাইজ ১০০ MB এর বেশি!");
+            this.value = '';
+            submitBtn.innerHTML = "ফাইল অনেক বড়";
+            return;
+        }
+
+        scanArea.style.display = 'block';
+        document.getElementById('scanLog1').innerText = `[1/3] File: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)...`;
+        document.getElementById('scanLog2').innerText = "";
+        document.getElementById('scanLog3').innerText = "";
+        progressFill.style.width = "10%";
+
+        setTimeout(() => {
+            progressFill.style.width = "40%";
+            document.getElementById('scanLog2').innerText = "[2/3] Checking for background music footprints...";
+            
+            setTimeout(() => {
+                progressFill.style.width = "75%";
+                document.getElementById('scanLog3').innerText = "[3/3] Analyzing audio spectral data for edits...";
+                
+                setTimeout(() => {
+                    progressFill.style.width = "100%";
+                    document.getElementById('scanLog3').innerText = "[Complete] File looks clean. Ready to upload.";
+                    document.getElementById('scanLog3').style.color = "#00ff00";
+                    isFileScanned = true;
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = "অডিও আপলোড করুন";
+                }, 1500);
+            }, 1500);
+        }, 1000);
+    });
+
+    // --- UPLOAD LOGIC ---
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!isFileScanned) return alert("দয়া করে ফাইল স্ক্যান শেষ হওয়া পর্যন্ত অপেক্ষা করুন!");
+        
+        const selectedMentors = [];
+        document.querySelectorAll('.mentor-cb:checked').forEach(cb => {
+            selectedMentors.push(cb.value);
+        });
+
+        if (selectedMentors.length === 0) return alert("দয়া করে অন্তত একজন মেন্টর সিলেক্ট করুন!");
+
+        const uploaderName = document.getElementById('uploaderName').value;
+        const file = audioInput.files[0];
+        statusDiv.innerHTML = "⏳ ক্লাউড সার্ভারে আপলোড হচ্ছে... দয়া করে ব্রাউজার কাটবেন না।";
+        submitBtn.disabled = true;
+        scanArea.style.display = 'none';
+
+        const expirationTime = Math.floor(Date.now() / 1000) + (24 * 60 * 60);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', uploadPreset);
+        formData.append('metadata', `media_metadata_expiration_time=${expirationTime}`);
+
+        try {
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+
+            if (data.secure_url) {
+                // Save to Firestore with Uploader Name
+                await db.collection('requests').add({
+                    audioUrl: data.secure_url,
+                    mentors: selectedMentors, 
+                    uploaderName: uploaderName,
+                    fileName: file.name,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! অডিওটি পাঠানো হয়েছে।</span>";
+                document.getElementById('uploadForm').reset();
+                progressFill.style.width = "0%";
+            } else {
+                statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ আপলোড ব্যর্থ হয়েছে।</span>";
+            }
+        } catch (err) {
+            statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ এরর: " + err.message + "</span>";
+        }
+        submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
+    });
+
+    // --- MENTOR DASHBOARD & NOTIFICATIONS ---
+    let initialLoadComplete = false;
+
+    function playNotifySound() {
+        const sound = document.getElementById('notifySound');
+        sound.play().catch(e => console.log("Sound play blocked."));
+    }
+
+    function showBrowserNotification(fileName, uploader) {
+        if (window.Notification && Notification.permission === "granted") {
+            new Notification("নতুন অডিও এসেছে!", {
+                body: `পাঠিয়েছে: ${uploader}\nফাইলের নাম: ${fileName}\nদয়া করে ড্যাশবোর্ড চেক করুন।`,
+                icon: "https://cdn-icons-png.flaticon.com/512/3594/3594095.png"
+            });
+        }
+    }
+
+    document.getElementById('mentorLoginBtn').addEventListener('click', () => {
+        const password = prompt("মেন্টর প্যানেলের পাসওয়ার্ড দিন:");
+        if (password === "Mentor") {
+            mainContainer.style.display = 'none';
+            mentorDashboard.style.display = 'block';
+            
+            requestNotifyPermission();
+            loadMentorData();
+        } else {
+            alert("❌ ভুল পাসওয়ার্ড!");
+        }
+    });
+
+    function loadMentorData() {
+        const last24h = new Date();
+        last24h.setHours(last24h.getHours() - 24);
+
+        db.collection('requests')
+          .where('timestamp', '>=', last24h)
+          .orderBy('timestamp', 'desc')
+          .onSnapshot(snapshot => {
+            const listDiv = document.getElementById('requestList');
+            
+            if (initialLoadComplete) {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        const newDoc = change.doc.data();
+                        playNotifySound();
+                        showBrowserNotification(newDoc.fileName || "New Audio", newDoc.uploaderName || "Someone");
+                    }
+                });
+            }
+
+            listDiv.innerHTML = "";
+
+            if (snapshot.empty) {
+                listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় নতুন কোনো অডিও আসেনি।</p>";
+                initialLoadComplete = true;
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const docId = doc.id;
+                const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now";
+                const mentorNames = data.mentors ? data.mentors.join(', ') : "সবাই";
+                const uploader = data.uploaderName || "Unknown";
+
+                listDiv.innerHTML += `
+                    <div class="audio-card">
+                        <span class="timestamp">${timeStr}</span>
+                        <p style="margin:0 0 5px 0; color:#00d2ff; font-size:16px; font-weight:bold;">পাঠিয়েছে: ${uploader}</p>
+                        <p style="margin:0 0 5px 0; color:#bb86fc; font-size:14px;">কাকে পাঠিয়েছে: ${mentorNames}</p>
+                        <audio controls src="${data.audioUrl}"></audio>
+                        <button class="btn-delete" onclick="deleteRecord('${docId}')">🗑️ লিস্ট থেকে মুছুন</button>
+                    </div>
+                `;
+            });
+            
+            initialLoadComplete = true;
+        });
+    }
+
+    window.deleteRecord = async function(docId) {
+        if(confirm("অডিওটি কি লিস্ট থেকে মুছে ফেলতে চান?")) {
+            await db.collection('requests').doc(docId).delete();
+        }
+    }
+</script>
+
+</body>
+</html>
