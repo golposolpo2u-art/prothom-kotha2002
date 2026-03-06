@@ -321,7 +321,7 @@
 <!-- 2. MENTOR DASHBOARD (Hidden default) -->
 <div class="container mentor-area" id="mentorDashboard">
     <div class="top-bar">
-        <span style="color: #bb86fc; font-weight: bold;">প্যানেল অ্যাক্টিভ</span>
+        <span id="mentorNameDisplay" style="color: #00ffcc; font-weight: bold;"></span>
         <button onclick="location.reload()" class="logout-btn">প্যানেল বন্ধ করুন</button>
     </div>
 
@@ -451,21 +451,27 @@
 
             if (data.secure_url) {
                 // Save to Firestore with Uploader Name
-                await db.collection('requests').add({
-                    audioUrl: data.secure_url,
-                    mentors: selectedMentors, 
-                    uploaderName: uploaderName,
-                    fileName: file.name,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! অডিওটি পাঠানো হয়েছে।</span>";
-                document.getElementById('uploadForm').reset();
-                progressFill.style.width = "0%";
+                try {
+                    await db.collection('requests').add({
+                        audioUrl: data.secure_url,
+                        mentors: selectedMentors, 
+                        uploaderName: uploaderName,
+                        fileName: file.name,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    statusDiv.innerHTML = "<span style='color:#00ff00;'>✅ আপলোড সফল! অডিওটি মেন্টরের কাছে পাঠানো হয়েছে।</span>";
+                    document.getElementById('uploadForm').reset();
+                    progressFill.style.width = "0%";
+                } catch(fsErr) {
+                    // This error shows if Firebase Rules are not updated
+                    statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ডাটাবেস এরর: Firebase-এর Rules সেটআপ ঠিক নেই! (${fsErr.message})</span>`;
+                }
             } else {
-                statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ আপলোড ব্যর্থ হয়েছে।</span>";
+                // This error shows if Cloudinary fails
+                statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ক্লাউড আপলোড ব্যর্থ! কারণ: ${data.error ? data.error.message : "Unknown error"}</span>`;
             }
         } catch (err) {
-            statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ এরর: " + err.message + "</span>";
+            statusDiv.innerHTML = "<span style='color:#ff4d4d;'>❌ এরর: ইন্টারনেট সমস্যা বা অন্য ত্রুটি! " + err.message + "</span>";
         }
         submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
     });
@@ -487,20 +493,31 @@
         }
     }
 
+    // Mentor Passwords Setup
     document.getElementById('mentorLoginBtn').addEventListener('click', () => {
-        const password = prompt("মেন্টর প্যানেলের পাসওয়ার্ড দিন:");
-        if (password === "Mentor") {
-            mainContainer.style.display = 'none';
-            mentorDashboard.style.display = 'block';
-            
-            requestNotifyPermission();
-            loadMentorData();
-        } else {
-            alert("❌ ভুল পাসওয়ার্ড!");
+        const password = prompt("আপনার মেন্টর পাসওয়ার্ড দিন:");
+        let loggedInMentor = "";
+
+        if (password === "Neha123") loggedInMentor = "শুচিস্মিতা দাস নেহা";
+        else if (password === "Bidisha123") loggedInMentor = "বিদিশা মুখার্জি";
+        else if (password === "Sanjit123") loggedInMentor = "সঞ্জিত মল্লিক";
+        else if (password === "Samun123") loggedInMentor = "সামুন ইসলাম";
+        else if (password === "Master2024") loggedInMentor = "All"; // Admin Password
+        else {
+            return alert("❌ ভুল পাসওয়ার্ড! দয়া করে সঠিক পাসওয়ার্ড দিন।");
         }
+
+        mainContainer.style.display = 'none';
+        mentorDashboard.style.display = 'block';
+        
+        document.getElementById('mentorNameDisplay').innerText = (loggedInMentor === "All") ? "👤 অ্যাডমিন প্যানেল" : `👤 মেন্টর: ${loggedInMentor}`;
+        
+        requestNotifyPermission();
+        loadMentorData(loggedInMentor);
     });
 
-    function loadMentorData() {
+    // Only load data for the logged in mentor
+    function loadMentorData(mentorName) {
         const last24h = new Date();
         last24h.setHours(last24h.getHours() - 24);
 
@@ -510,26 +527,32 @@
           .onSnapshot(snapshot => {
             const listDiv = document.getElementById('requestList');
             
+            // Handle new notifications targeting ONLY this mentor
             if (initialLoadComplete) {
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added") {
                         const newDoc = change.doc.data();
-                        playNotifySound();
-                        showBrowserNotification(newDoc.fileName || "New Audio", newDoc.uploaderName || "Someone");
+                        // Check if it's meant for Admin ("All") OR the specific mentor
+                        if (mentorName === "All" || (newDoc.mentors && newDoc.mentors.includes(mentorName))) {
+                            playNotifySound();
+                            showBrowserNotification(newDoc.fileName || "New Audio", newDoc.uploaderName || "Unknown");
+                        }
                     }
                 });
             }
 
             listDiv.innerHTML = "";
 
-            if (snapshot.empty) {
-                listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় নতুন কোনো অডিও আসেনি।</p>";
-                initialLoadComplete = true;
-                return;
-            }
-
+            let count = 0;
             snapshot.forEach(doc => {
                 const data = doc.data();
+                
+                // Skip rendering if this audio wasn't sent to this mentor
+                if (mentorName !== "All" && (!data.mentors || !data.mentors.includes(mentorName))) {
+                    return; 
+                }
+
+                count++;
                 const docId = doc.id;
                 const timeStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now";
                 const mentorNames = data.mentors ? data.mentors.join(', ') : "সবাই";
@@ -545,6 +568,10 @@
                     </div>
                 `;
             });
+
+            if (count === 0) {
+                listDiv.innerHTML = "<p style='text-align:center; color: #aaa;'>গত ২৪ ঘণ্টায় আপনার জন্য নতুন কোনো অডিও আসেনি।</p>";
+            }
             
             initialLoadComplete = true;
         });
