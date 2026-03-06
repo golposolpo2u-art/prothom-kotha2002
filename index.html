@@ -337,6 +337,8 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
+    /* VERSION: 2.1 - Metadata Fix Applied */
+    
     // 1. Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCjrGdZMocegvJBIXKI5UKAfzFK7k3-iKI", 
@@ -417,7 +419,7 @@
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', uploadPreset);
-        // Metadata append line is COMPLETELY REMOVED to avoid the External ID error
+        // NO METADATA APPENDED HERE
 
         try {
             const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
@@ -438,11 +440,13 @@
                 document.getElementById('uploadForm').reset();
                 progressFill.style.width = "0%";
             } else {
-                const errMsg = data.error ? data.error.message : "Cloudinary check: Preset mismatch or Metadata error";
+                const errMsg = data.error ? data.error.message : "Upload rejected by Cloudinary";
                 statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ ভুল: ${errMsg}</span>`;
+                console.error("Cloudinary Error:", data);
             }
         } catch (err) {
             statusDiv.innerHTML = `<span style='color:#ff4d4d;'>❌ কানেকশন এরর: ${err.message}</span>`;
+            console.error("Network Error:", err);
         }
         submitBtn.innerHTML = "প্রথমে ফাইল সিলেক্ট করুন";
     });
